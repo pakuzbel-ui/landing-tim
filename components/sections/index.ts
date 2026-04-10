@@ -1,0 +1,9 @@
+export { HeroSection } from "./hero";
+export { AboutSection } from "./about";
+export { HowItWorksSection } from "./how-it-works";
+export { BenefitsSection } from "./benefits";
+export { GeographySection } from "./geography";
+export { AudiencesSection } from "./audiences";
+export { ProductHighlightsSection } from "./product-highlights";
+export { FaqSection } from "./faq";
+export { ContactFormSection } from "./contact-form";
