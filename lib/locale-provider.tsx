@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Locale, siteContent } from "@/data/i18n";
+import { Locale, localeOptions, siteContent } from "@/data/i18n";
 
 type LocaleContextValue = {
   locale: Locale;
@@ -22,7 +22,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem("teamcash-locale") as Locale | null;
-    if (stored && stored in siteContent) {
+    if (stored && localeOptions.some((item) => item.code === stored)) {
       setLocale(stored);
     }
   }, []);
@@ -30,6 +30,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     window.localStorage.setItem("teamcash-locale", locale);
     document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "fa" ? "rtl" : "ltr";
   }, [locale]);
 
   const value = useMemo(() => ({ locale, setLocale }), [locale]);

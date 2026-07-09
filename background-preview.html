@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TeamCash Background Preview</title>
+    <style>
+      :root {
+        --bg: #05080d;
+        --panel: rgba(7, 13, 21, 0.82);
+        --line: rgba(255, 205, 0, 0.36);
+        --text: #f2f5f8;
+        --muted: #9aa8b8;
+        --yellow: #ffd000;
+        --blue: #16a3ff;
+        --green: #20d27d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #05080d;
+        color: var(--text);
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      main {
+        width: min(1220px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(34px, 5vw, 72px);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 0 0 30px;
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.45;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .preview {
+        position: relative;
+        min-height: 380px;
+        overflow: hidden;
+        border: 1px solid rgba(130, 155, 185, 0.28);
+        border-radius: 18px;
+        background: var(--bg);
+        box-shadow: 0 22px 90px rgba(0, 0, 0, 0.42);
+      }
+
+      .preview::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(5, 8, 13, 0.05), rgba(5, 8, 13, 0.92));
+        pointer-events: none;
+      }
+
+      .content {
+        position: absolute;
+        z-index: 2;
+        inset: auto 26px 24px 26px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        height: 34px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 208, 0, 0.4);
+        border-radius: 999px;
+        color: var(--yellow);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 16px 0 10px;
+        max-width: 620px;
+        font-size: clamp(28px, 4vw, 46px);
+        line-height: 1.02;
+      }
+
+      p {
+        max-width: 600px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .slip {
+        background:
+          radial-gradient(circle at 82% 18%, rgba(255, 208, 0, 0.24), transparent 30%),
+          radial-gradient(circle at 16% 78%, rgba(22, 163, 255, 0.16), transparent 34%),
+          #04070c;
+      }
+
+      .slip .ticket {
+        position: absolute;
+        width: 210px;
+        height: 118px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 208, 0, 0.3);
+        background: rgba(255, 208, 0, 0.08);
+        transform: rotate(-10deg);
+      }
+
+      .slip .ticket:nth-child(1) {
+        top: 42px;
+        left: 36px;
+      }
+
+      .slip .ticket:nth-child(2) {
+        top: 84px;
+        right: 52px;
+        transform: rotate(12deg);
+      }
+
+      .slip .ticket:nth-child(3) {
+        bottom: 98px;
+        left: 42%;
+        transform: rotate(4deg);
+      }
+
+      .slip .odds {
+        position: absolute;
+        top: 22px;
+        left: 24px;
+        color: rgba(255, 208, 0, 0.9);
+        font-size: 26px;
+        font-weight: 900;
+      }
+
+      .live {
+        background:
+          radial-gradient(circle at 74% 30%, rgba(32, 210, 125, 0.16), transparent 26%),
+          radial-gradient(circle at 20% 25%, rgba(255, 208, 0, 0.2), transparent 34%),
+          #05080d;
+      }
+
+      .live .pitch {
+        position: absolute;
+        inset: 34px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 22px;
+        opacity: 0.78;
+      }
+
+      .live .pitch::before,
+      .live .pitch::after {
+        content: "";
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .live .pitch::before {
+        inset: 58px 28%;
+        border-radius: 999px;
+      }
+
+      .live .pitch::after {
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .live .cash-dot {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--yellow);
+        box-shadow: 0 0 0 10px rgba(255, 208, 0, 0.13), 0 0 34px rgba(255, 208, 0, 0.7);
+      }
+
+      .live .cash-dot:nth-child(2) {
+        top: 94px;
+        left: 38%;
+      }
+
+      .live .cash-dot:nth-child(3) {
+        top: 170px;
+        left: 58%;
+      }
+
+      .live .cash-dot:nth-child(4) {
+        top: 236px;
+        left: 28%;
+      }
+
+      .terminal {
+        background:
+          linear-gradient(120deg, rgba(255, 208, 0, 0.14), transparent 32%),
+          radial-gradient(circle at 74% 64%, rgba(22, 163, 255, 0.15), transparent 30%),
+          #05080d;
+      }
+
+      .terminal .screen {
+        position: absolute;
+        top: 32px;
+        right: 34px;
+        width: 46%;
+        height: 210px;
+        border: 1px solid rgba(255, 208, 0, 0.28);
+        border-radius: 18px;
+        background: rgba(5, 10, 17, 0.76);
+        padding: 20px;
+      }
+
+      .terminal .row {
+        height: 12px;
+        margin-bottom: 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .terminal .row:nth-child(2) {
+        width: 68%;
+        background: rgba(255, 208, 0, 0.72);
+      }
+
+      .terminal .row:nth-child(3) {
+        width: 82%;
+      }
+
+      .terminal .coin {
+        position: absolute;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 208, 0, 0.78);
+        color: var(--yellow);
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        font-weight: 900;
+        box-shadow: 0 0 40px rgba(255, 208, 0, 0.24);
+      }
+
+      .terminal .coin:nth-child(2) {
+        left: 72px;
+        top: 78px;
+      }
+
+      .terminal .coin:nth-child(3) {
+        left: 148px;
+        top: 150px;
+      }
+
+      .map {
+        background:
+          radial-gradient(circle at 50% 46%, rgba(255, 208, 0, 0.18), transparent 34%),
+          radial-gradient(circle at 76% 20%, rgba(32, 210, 125, 0.14), transparent 30%),
+          #05080d;
+      }
+
+      .map .globe {
+        position: absolute;
+        top: 28px;
+        left: 50%;
+        width: 310px;
+        height: 310px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.16), transparent 18%),
+          radial-gradient(circle at 50% 50%, rgba(255, 208, 0, 0.18), transparent 62%),
+          #08111b;
+        box-shadow: inset -40px -30px 80px rgba(0, 0, 0, 0.7), 0 0 70px rgba(255, 208, 0, 0.18);
+        border: 1px solid rgba(255, 208, 0, 0.28);
+      }
+
+      .map .globe::before {
+        content: "";
+        position: absolute;
+        inset: 24px;
+        border-radius: 50%;
+        background:
+          radial-gradient(ellipse at 30% 40%, rgba(255, 208, 0, 0.38) 0 12%, transparent 13%),
+          radial-gradient(ellipse at 58% 34%, rgba(255, 208, 0, 0.28) 0 9%, transparent 10%),
+          radial-gradient(ellipse at 52% 60%, rgba(255, 208, 0, 0.22) 0 11%, transparent 12%);
+        filter: blur(1px);
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .preview {
+          min-height: 330px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Варианты фона TeamCash</h1>
+      <p class="lead">Это отдельное превью, оно не меняет текущий сайт. Идея: фон должен говорить про ставки, деньги, партнерство и локальные платежи, но не выглядеть как сухая схема.</p>
+      <section class="grid">
+        <article class="preview slip">
+          <div class="ticket"><span class="odds">2.40</span></div>
+          <div class="ticket"><span class="odds">1.85</span></div>
+          <div class="ticket"><span class="odds">3.10</span></div>
+          <div class="content">
+            <span class="tag">Bet Slip Layer</span>
+            <h2>Купоны ставок как фон</h2>
+            <p>Мягкие карточки odds, темный premium-вид и желтый MelBet-акцент. Сразу читается betting и заработок.</p>
+          </div>
+        </article>
+
+        <article class="preview live">
+          <div class="pitch"></div>
+          <span class="cash-dot"></span>
+          <span class="cash-dot"></span>
+          <span class="cash-dot"></span>
+          <div class="content">
+            <span class="tag">Live Market</span>
+            <h2>Игровое поле + точки дохода</h2>
+            <p>Более спортивно и динамично: точки можно воспринимать как рынки, агентов или платежные узлы.</p>
+          </div>
+        </article>
+
+        <article class="preview terminal">
+          <div class="screen">
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+          </div>
+          <div class="coin">$</div>
+          <div class="coin">%</div>
+          <div class="content">
+            <span class="tag">Cash Desk</span>
+            <h2>Платежная касса и партнерский доход</h2>
+            <p>Больше про TeamCash как платежное решение: операции, баланс, комиссии, скорость выплат.</p>
+          </div>
+        </article>
+
+        <article class="preview map">
+          <div class="globe"></div>
+          <div class="content">
+            <span class="tag">Partner Network</span>
+            <h2>Глобус рынков и локальных агентов</h2>
+            <p>Связь с географией: страны, локальные партнеры, платежная сеть и масштабирование.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

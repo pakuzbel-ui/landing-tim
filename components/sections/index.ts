@@ -2,6 +2,7 @@ export { HeroSection } from "./hero";
 export { AboutSection } from "./about";
 export { HowItWorksSection } from "./how-it-works";
 export { BenefitsSection } from "./benefits";
+export { EarningsCalculatorSection } from "./earnings-calculator";
 export { GeographySection } from "./geography";
 export { AudiencesSection } from "./audiences";
 export { ProductHighlightsSection } from "./product-highlights";

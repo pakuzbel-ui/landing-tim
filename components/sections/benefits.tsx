@@ -4,16 +4,16 @@ import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { BoltIcon, GlobeIcon, LayersIcon, ShieldIcon, UsersIcon } from "@/components/ui/icons";
+import { CoverageIcon, HeadsetIcon, MapPinIcon, NetworkIcon, TimerIcon, WalletIcon } from "@/components/ui/icons";
 import { useSiteContent } from "@/lib/locale-provider";
 
-const icons = [BoltIcon, GlobeIcon, LayersIcon, UsersIcon, ShieldIcon, BoltIcon];
+const icons = [WalletIcon, TimerIcon, MapPinIcon, NetworkIcon, HeadsetIcon, CoverageIcon];
 
 export function BenefitsSection() {
   const content = useSiteContent();
 
   return (
-    <section id="benefits" className="py-20 sm:py-24">
+    <section id="benefits" className="py-14 sm:py-18">
       <Container>
         <Reveal>
           <SectionHeading
@@ -23,20 +23,20 @@ export function BenefitsSection() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {content.benefits.items.map((item, index) => {
             const Icon = icons[index];
 
             return (
               <Reveal key={item.title} delay={index * 90}>
-                <Card className="h-full">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                    <Icon />
+                <Card className="h-full p-5 sm:p-6">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
+                    <Icon className="h-[18px] w-[18px]" />
                   </div>
-                  <h3 className="mt-6 font-display text-2xl font-semibold text-copy">
+                  <h3 className="mt-5 font-display text-xl font-semibold leading-tight text-copy sm:text-[1.35rem]">
                     {item.title}
                   </h3>
-                  <p className="mt-4 text-base leading-7 text-copy-muted">{item.description}</p>
+                  <p className="mt-3 text-sm leading-6 text-copy-muted">{item.description}</p>
                 </Card>
               </Reveal>
             );
