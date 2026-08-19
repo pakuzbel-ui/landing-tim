@@ -2,10 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { Container } from "@/components/ui/container";
-import { Card } from "@/components/ui/card";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { ArrowUpRightIcon, FacebookIcon, InstagramIcon, TelegramIcon } from "@/components/ui/icons";
+import { FacebookIcon, InstagramIcon, TelegramIcon } from "@/components/ui/icons";
 import { useLocale, useSiteContent } from "@/lib/locale-provider";
 import type { Locale } from "@/data/i18n";
 
@@ -15,28 +13,25 @@ const socialLinks = [
     textKey: "telegram",
     href: "https://t.me/bigboyy_1",
     icon: TelegramIcon,
-    tone: "bg-[#229ED9] text-white",
+    tone: "text-[#54bcec]",
   },
   {
     label: "Instagram",
     textKey: "instagram",
     href: "https://instagram.com/",
     icon: InstagramIcon,
-    tone: "bg-[radial-gradient(circle_at_30%_110%,#FEDA75_0%,#FA7E1E_24%,#D62976_48%,#962FBF_72%,#4F5BD5_100%)] text-white",
+    tone: "text-[#e85b9c]",
   },
   {
     label: "Facebook",
     textKey: "facebook",
     href: "https://facebook.com/",
     icon: FacebookIcon,
-    tone: "bg-[#1877F2] text-white",
+    tone: "text-[#5a9df5]",
   },
 ];
 
 type ContactCopy = {
-  openTelegram: string;
-  quick: string;
-  messageTelegram: string;
   socialEyebrow: string;
   socialTitle: string;
   socialDescription: string;
@@ -45,9 +40,6 @@ type ContactCopy = {
 
 const contactCopy: Record<Locale, ContactCopy> = {
   ru: {
-    openTelegram: "Открыть контакт в Telegram",
-    quick: "Быстрый контакт",
-    messageTelegram: "Написать в Telegram",
     socialEyebrow: "Социальные каналы",
     socialTitle: "Подпишитесь на наши соцсети",
     socialDescription:
@@ -59,9 +51,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   en: {
-    openTelegram: "Open Telegram contact",
-    quick: "Quick contact",
-    messageTelegram: "Message on Telegram",
     socialEyebrow: "Social channels",
     socialTitle: "Follow our social channels",
     socialDescription: "Get TeamCash updates, country news and quick partner contacts.",
@@ -72,9 +61,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   mn: {
-    openTelegram: "Telegram холбоо нээх",
-    quick: "Шуурхай холбоо",
-    messageTelegram: "Telegram дээр бичих",
     socialEyebrow: "Сошиал сувгууд",
     socialTitle: "Манай сошиал сувгуудыг дагаарай",
     socialDescription: "TeamCash-ийн мэдээ, улс орнуудын шинэчлэл болон түншүүдийн шуурхай холбоог аваарай.",
@@ -85,9 +71,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   tg: {
-    openTelegram: "Кушодани тамос дар Telegram",
-    quick: "Тамоси зуд",
-    messageTelegram: "Дар Telegram нависед",
     socialEyebrow: "Шабакаҳои иҷтимоӣ",
     socialTitle: "Ба каналҳои иҷтимоии мо обуна шавед",
     socialDescription: "Навигариҳои TeamCash, хабарҳои кишварҳо ва тамосҳои зуд барои шариконро пайгирӣ кунед.",
@@ -98,9 +81,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   uz: {
-    openTelegram: "Telegram kontaktni ochish",
-    quick: "Tezkor aloqa",
-    messageTelegram: "Telegramda yozish",
     socialEyebrow: "Ijtimoiy kanallar",
     socialTitle: "Ijtimoiy kanallarimizga obuna bo'ling",
     socialDescription: "TeamCash yangiliklari, mamlakatlar bo'yicha xabarlar va hamkorlar uchun tezkor kontaktlarni kuzatib boring.",
@@ -111,9 +91,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   az: {
-    openTelegram: "Telegram əlaqəsini açmaq",
-    quick: "Sürətli əlaqə",
-    messageTelegram: "Telegram-da yazın",
     socialEyebrow: "Sosial kanallar",
     socialTitle: "Sosial kanallarımıza abunə olun",
     socialDescription: "TeamCash yeniliklərini, ölkələr üzrə xəbərləri və tərəfdaşlar üçün sürətli əlaqələri izləyin.",
@@ -124,9 +101,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   tk: {
-    openTelegram: "Telegram aragatnaşygyny açmak",
-    quick: "Çalt habarlaşmak",
-    messageTelegram: "Telegram-da ýazmak",
     socialEyebrow: "Sosial kanallar",
     socialTitle: "Sosial kanallarymyza ýazylyň",
     socialDescription: "TeamCash täzeliklerini, ýurtlar boýunça habarlary we hyzmatdaşlar üçin çalt kontaktlary yzarlaň.",
@@ -137,9 +111,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   ky: {
-    openTelegram: "Telegram байланышын ачуу",
-    quick: "Тез байланыш",
-    messageTelegram: "Telegram аркылуу жазуу",
     socialEyebrow: "Социалдык каналдар",
     socialTitle: "Биздин социалдык каналдарга жазылыңыз",
     socialDescription: "TeamCash жаңылыктарын, өлкөлөр боюнча маалыматтарды жана өнөктөштөр үчүн тез байланыштарды көрүп туруңуз.",
@@ -150,9 +121,6 @@ const contactCopy: Record<Locale, ContactCopy> = {
     },
   },
   fa: {
-    openTelegram: "باز کردن تماس تلگرام",
-    quick: "تماس سریع",
-    messageTelegram: "در تلگرام پیام بدهید",
     socialEyebrow: "کانال‌های اجتماعی",
     socialTitle: "کانال‌های اجتماعی ما را دنبال کنید",
     socialDescription: "تازه‌های TeamCash، خبرهای کشورها و تماس‌های سریع برای شریکان را دنبال کنید.",
@@ -201,56 +169,48 @@ export function ContactFormSection() {
     <section id="contact" className="py-20 sm:py-24">
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
-          <Reveal>
-            <div className="max-w-2xl">
-              <SectionHeading
-                eyebrow={content.contact.eyebrow}
-                title={content.contact.title}
-                description={content.contact.description}
-              />
+          <div className="w-full">
+            <SectionHeading
+              eyebrow={content.contact.eyebrow}
+              title={content.contact.title}
+              description={content.contact.description}
+            />
 
-              <Card className="mt-8 border-white/[0.07] bg-black/40 shadow-[0_20px_60px_rgba(0,0,0,0.24)] ring-white/[0.025]">
-                <div className="text-sm uppercase tracking-[0.24em] text-copy-muted">{copy.socialEyebrow}</div>
-                <div className="mt-2 font-display text-xl font-semibold text-copy">{copy.socialTitle}</div>
-                <p className="mt-2 text-sm leading-6 text-copy-muted">
-                  {copy.socialDescription}
-                </p>
+            <div className="mt-8">
+              <div className="text-sm uppercase tracking-[0.24em] text-copy-muted">{copy.socialEyebrow}</div>
+              <div className="mt-2 font-display text-xl font-semibold text-copy">{copy.socialTitle}</div>
+              <p className="mt-2 text-sm leading-6 text-copy-muted">{copy.socialDescription}</p>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  {socialLinks.map((item) => {
-                    const Icon = item.icon;
+              <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                {socialLinks.map((item) => {
+                  const Icon = item.icon;
 
-                    return (
-                      <a
-                        key={item.label}
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group flex items-center justify-between gap-3 rounded-full border border-white/[0.07] bg-black/32 px-4 py-3 transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-black/44"
-                      >
-                        <span className="flex items-center gap-3">
-                          <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${item.tone}`}>
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <span>
-                            <span className="block text-sm font-semibold text-copy">{item.label}</span>
-                            <span className="block text-xs text-copy-muted">
-                              {copy.links[item.textKey as keyof typeof copy.links]}
-                            </span>
-                          </span>
+                  return (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-3 py-2"
+                    >
+                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center ${item.tone}`}>
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <span>
+                        <span className="block text-sm font-semibold text-copy">{item.label}</span>
+                        <span className="block text-xs text-copy-muted">
+                          {copy.links[item.textKey as keyof typeof copy.links]}
                         </span>
-                        <ArrowUpRightIcon className="h-4 w-4 shrink-0 text-primary/70 transition group-hover:text-primary" />
-                      </a>
-                    );
-                  })}
-                </div>
-              </Card>
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal delay={120}>
-            <Card className="p-6 sm:p-8">
-              <form className="space-y-5" onSubmit={handleSubmit}>
+          <div className="py-2">
+            <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field
                     label={content.contact.fields.name}
@@ -291,19 +251,18 @@ export function ContactFormSection() {
                       setForm((current) => ({ ...current, details: event.target.value }))
                     }
                     placeholder={content.contact.fields.placeholders.details}
-                    className="w-full rounded-[22px] border border-white/10 bg-white/[0.03] px-4 py-3 text-base text-copy outline-none transition placeholder:text-copy-muted/70 focus:border-primary/40 focus:bg-white/[0.05]"
+                    className="w-full resize-y border-b border-white/25 bg-transparent px-0 py-3 text-base text-copy outline-none placeholder:text-copy-muted/70 focus:border-primary"
                   />
                 </label>
 
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-black shadow-glow transition hover:-translate-y-0.5 hover:bg-[#ffe07a]"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-black"
                 >
                   {content.contact.submit}
                 </button>
-              </form>
-            </Card>
-          </Reveal>
+            </form>
+          </div>
         </div>
       </Container>
     </section>
@@ -326,7 +285,7 @@ function Field({ label, value, onChange, placeholder }: FieldProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-[22px] border border-white/10 bg-white/[0.03] px-4 py-3 text-base text-copy outline-none transition placeholder:text-copy-muted/70 focus:border-primary/40 focus:bg-white/[0.05]"
+        className="w-full border-b border-white/25 bg-transparent px-0 py-3 text-base text-copy outline-none placeholder:text-copy-muted/70 focus:border-primary"
       />
     </label>
   );

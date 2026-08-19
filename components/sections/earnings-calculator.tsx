@@ -1,13 +1,17 @@
 "use client";
 
-import { ChangeEvent, useMemo, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
 import { useLocale } from "@/lib/locale-provider";
 import type { Locale } from "@/data/i18n";
 
 const AGENT_PERCENT = 8;
 const AFFILIATE_PERCENT = 35;
+const MIN_AMOUNT = 0;
+const MAX_AMOUNT = 100_000;
+const STEP_AMOUNT = 1_000;
+const DEFAULT_AMOUNT = 10_000;
 
 type CalculatorCopy = {
   eyebrow: string;
@@ -185,49 +189,192 @@ export function EarningsCalculatorSection() {
   }, [deposit, losses]);
 
   return (
-    <section id="calculator" className="py-16 sm:py-20">
+    <section id="calculator" className="py-10 sm:py-12 lg:py-14">
       <Container>
-        <Reveal>
-          <div className="mx-auto max-w-5xl text-center">
-            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">{text.eyebrow}</div>
-            <h2 className="mt-4 font-display text-4xl font-semibold uppercase leading-none text-primary sm:text-5xl lg:text-6xl">
+        <div className="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[minmax(260px,0.72fr)_minmax(0,1.45fr)] lg:items-center lg:gap-12">
+          <div className="text-left">
+          <div className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">{text.eyebrow}</div>
+            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-copy sm:text-4xl">
               {text.title}
             </h2>
-            <p className="mx-auto mt-5 max-w-4xl text-base leading-7 text-copy-muted sm:text-lg">
+            <p className="mt-3 max-w-xl text-sm leading-6 text-copy-muted sm:text-base">
               {text.description}
             </p>
           </div>
-        </Reveal>
 
-        <Reveal delay={120}>
-          <div className="mx-auto mt-8 grid max-w-4xl gap-4">
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="min-w-0 border-y border-white/15 py-4 sm:py-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5">
               <AmountField label={text.deposit} value={deposit} onChange={setDeposit} />
               <AmountField label={text.losses} value={losses} onChange={setLosses} />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <ResultCard title={text.agent} value={values.agent} note={text.agentNote} />
-              <ResultCard title={text.affiliate} value={values.affiliate} note={text.affiliateNote} />
+            <div className="mt-4 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-3 sm:mt-5 sm:pt-4">
+              <ResultSummary title={text.agent} value={values.agent} note={text.agentNote} />
+              <ResultSummary title={text.affiliate} value={values.affiliate} note={text.affiliateNote} />
+              <ResultSummary title={text.total} value={values.total} note={text.totalNote} accent />
             </div>
 
-            <div className="rounded-xl border border-primary/35 bg-[#2e2707]/72 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.32)] sm:p-7">
-              <div className="text-center">
-                <div className="text-xs font-bold uppercase tracking-[0.34em] text-primary">{text.total}</div>
-                <div className="mt-2 font-display text-5xl font-semibold leading-none text-primary sm:text-6xl">
-                  {formatUsd(values.total)}
-                </div>
-              </div>
-              <div className="my-6 h-px bg-white/10" />
-              <p className="text-center text-base leading-7 text-copy-muted">{text.totalNote}</p>
-              <div className="mt-6 rounded-md bg-primary py-3 text-center text-sm font-bold uppercase tracking-[0.18em] text-black">
-                {text.level}
-              </div>
+            <div className="mt-3 text-right text-[9px] font-bold uppercase tracking-[0.18em] text-primary sm:text-[10px]">
+              {text.level}
             </div>
           </div>
-        </Reveal>
+        </div>
       </Container>
     </section>
+  );
+}
+
+type EarningsCalculatorModalProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export function EarningsCalculatorModal({ open, onClose }: EarningsCalculatorModalProps) {
+  const { locale } = useLocale();
+  const text = copy[locale];
+  const [mounted, setMounted] = useState(false);
+  const [deposit, setDeposit] = useState(DEFAULT_AMOUNT);
+  const [losses, setLosses] = useState(DEFAULT_AMOUNT);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const values = useMemo(() => {
+    const agent = deposit * (AGENT_PERCENT / 100);
+    const affiliate = losses * (AFFILIATE_PERCENT / 100);
+
+    return {
+      agent,
+      affiliate,
+      total: agent + affiliate,
+    };
+  }, [deposit, losses]);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose, open]);
+
+  if (!mounted || !open) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 py-6"
+      onPointerDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="income-calculator-title"
+        className="max-h-[calc(100vh-3rem)] w-full max-w-[560px] overflow-y-auto rounded-lg border border-white/10 bg-[#080b0d] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.65)] sm:p-5"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+              {text.eyebrow}
+            </div>
+            <h2 id="income-calculator-title" className="mt-1 font-display text-xl font-semibold leading-tight text-copy sm:text-2xl">
+              {text.title}
+            </h2>
+          </div>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close income calculator"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#111417] text-xl leading-none text-copy-muted transition hover:bg-[#181c20] hover:text-copy"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="mt-2 text-xs leading-5 text-copy-muted sm:text-sm">{text.description}</p>
+
+        <div className="mt-4 grid gap-3">
+          <AmountRange label={text.deposit} value={deposit} onChange={setDeposit} />
+          <AmountRange label={text.losses} value={losses} onChange={setLosses} />
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-lg border border-white/[0.08] bg-[#0e1215] sm:grid-cols-3">
+          <ResultMetric title={text.agent} value={values.agent} note={text.agentNote} />
+          <ResultMetric
+            title={text.affiliate}
+            value={values.affiliate}
+            note={text.affiliateNote}
+            className="border-l border-white/[0.08]"
+          />
+          <ResultMetric
+            title={text.total}
+            value={values.total}
+            note={text.totalNote}
+            accent
+            className="col-span-2 border-t border-white/[0.08] sm:col-span-1 sm:border-l sm:border-t-0"
+          />
+        </div>
+
+        <div className="mt-3 text-right text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+          {text.level}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+function AmountRange({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  const progress = ((value - MIN_AMOUNT) / (MAX_AMOUNT - MIN_AMOUNT)) * 100;
+
+  return (
+    <label className="block rounded-lg border border-white/[0.08] bg-[#0e1215] px-3 py-3">
+      <span className="flex items-center justify-between gap-4">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-copy-muted">{label}</span>
+        <span className="font-display text-lg font-semibold text-copy">{formatUsd(value)}</span>
+      </span>
+
+      <input
+        value={value}
+        onInput={(event) => onChange(Number(event.currentTarget.value))}
+        onChange={(event) => onChange(Number(event.target.value))}
+        type="range"
+        min={MIN_AMOUNT}
+        max={MAX_AMOUNT}
+        step={STEP_AMOUNT}
+        aria-label={label}
+        className="income-range mt-3"
+        style={{
+          background: `linear-gradient(to right, #fede33 0%, #fede33 ${progress}%, rgba(255,255,255,0.14) ${progress}%, rgba(255,255,255,0.14) 100%)`,
+        }}
+      />
+
+      <span className="mt-1.5 flex justify-between text-[10px] text-copy-muted/70">
+        <span>{formatUsd(MIN_AMOUNT)}</span>
+        <span>{formatUsd(MAX_AMOUNT)}</span>
+      </span>
+    </label>
   );
 }
 
@@ -241,30 +388,74 @@ function AmountField({
   onChange: (value: number) => void;
 }) {
   return (
-    <label className="rounded-xl border border-white/10 bg-[#050505]/76 p-5 text-center shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
-      <span className="block font-display text-2xl font-semibold uppercase text-primary">{label}</span>
-      <span className="mt-4 flex items-center justify-center rounded-lg border border-white/15 bg-black/70 px-4 py-4">
-        <span className="mr-2 text-2xl font-semibold text-copy">$</span>
+    <label className="block min-w-0">
+      <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-copy-muted sm:text-xs">
+        {label}
+      </span>
+      <span className="mt-2 flex min-w-0 items-center border-b border-white/25 pb-2">
+        <span className="mr-1.5 text-lg font-semibold text-primary sm:text-xl">$</span>
         <input
           value={value}
           onChange={(event) => onChange(readAmount(event))}
           type="number"
           min="0"
           inputMode="numeric"
-          className="w-full bg-transparent text-center font-display text-3xl font-semibold text-copy outline-none"
+          aria-label={`${label} $`}
+          className="min-w-0 w-full bg-transparent font-display text-xl font-semibold text-copy outline-none sm:text-2xl"
         />
       </span>
     </label>
   );
 }
 
-function ResultCard({ title, value, note }: { title: string; value: number; note: string }) {
+function ResultSummary({
+  title,
+  value,
+  note,
+  accent = false,
+}: {
+  title: string;
+  value: number;
+  note: string;
+  accent?: boolean;
+}) {
   return (
-    <div className="rounded-xl border border-white/12 bg-white/[0.075] p-5 text-center shadow-[0_18px_60px_rgba(0,0,0,0.24)] sm:p-7">
-      <div className="text-xs font-bold uppercase tracking-[0.34em] text-copy-muted">{title}</div>
-      <div className="mt-2 font-display text-4xl font-semibold text-copy sm:text-5xl">{formatUsd(value)}</div>
-      <div className="my-6 h-px bg-white/10" />
-      <p className="text-sm leading-6 text-copy-muted">{note}</p>
+    <div className="min-w-0 px-2 py-1.5 text-left sm:px-4 sm:py-2">
+      <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-copy-muted sm:text-[10px]">
+        {title}
+      </div>
+      <div
+        className={`mt-1 whitespace-nowrap font-display text-lg font-semibold sm:text-2xl ${
+          accent ? "text-primary" : "text-copy"
+        }`}
+      >
+        {formatUsd(value)}
+      </div>
+      <p className="mt-1 hidden text-xs leading-5 text-copy-muted sm:block">{note}</p>
+    </div>
+  );
+}
+
+function ResultMetric({
+  title,
+  value,
+  note,
+  accent = false,
+  className = "",
+}: {
+  title: string;
+  value: number;
+  note: string;
+  accent?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={`min-w-0 px-3 py-3 ${className}`}>
+      <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-copy-muted">{title}</div>
+      <div className={`mt-1 font-display text-2xl font-semibold ${accent ? "text-primary" : "text-copy"}`}>
+        {formatUsd(value)}
+      </div>
+      <p className="mt-1 text-xs leading-5 text-copy-muted">{note}</p>
     </div>
   );
 }

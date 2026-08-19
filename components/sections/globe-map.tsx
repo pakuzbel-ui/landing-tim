@@ -1,14 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { mesh } from "topojson-client";
 import countriesTopology from "world-atlas/countries-50m.json";
 import { TelegramIcon } from "@/components/ui/icons";
-import type { GeometryObject, Topology } from "topojson-specification";
+import { WavingFlag } from "@/components/ui/waving-flag";
 
 type GlobeMarker = {
   country: string;
+  note: string;
   capital: string;
   lat: number;
   lon: number;
@@ -26,29 +27,53 @@ type MarkerView = {
 };
 
 const fallbackTelegram = "https://t.me/teamcash_partnerships";
+const initialRotation = {
+  x: -0.22,
+  y: -THREE.MathUtils.degToRad(78),
+};
 
-type CapitalMarker = Omit<GlobeMarker, "country"> & {
+const countryFlags = ["🇲🇳", "🇹🇯", "🇺🇿", "🇦🇿", "🇹🇲", "🇰🇬", "🇦🇫"];
+
+type CapitalMarker = Omit<GlobeMarker, "country" | "note"> & {
   labelOffset: { x: number; y: number };
+  mobileLabelOffset?: { x: number; y: number };
   align?: "left" | "right";
 };
 
 const capitalMarkers: CapitalMarker[] = [
-  { capital: "Ulaanbaatar", lat: 47.9184, lon: 106.9177, telegram: fallbackTelegram, labelOffset: { x: 7, y: -3 } },
+  {
+    capital: "Ulaanbaatar",
+    lat: 47.9184,
+    lon: 106.9177,
+    telegram: fallbackTelegram,
+    labelOffset: { x: 14, y: -10 },
+    mobileLabelOffset: { x: 14, y: -18 },
+    align: "right",
+  },
   {
     capital: "Dushanbe",
     lat: 38.5598,
     lon: 68.787,
     telegram: fallbackTelegram,
-    labelOffset: { x: -8, y: 8 },
+    labelOffset: { x: -14, y: 3 },
+    mobileLabelOffset: { x: -8, y: 3 },
     align: "right",
   },
-  { capital: "Tashkent", lat: 41.2995, lon: 69.2401, telegram: fallbackTelegram, labelOffset: { x: 8, y: -5 } },
+  {
+    capital: "Tashkent",
+    lat: 41.2995,
+    lon: 69.2401,
+    telegram: fallbackTelegram,
+    labelOffset: { x: 14, y: -1 },
+    mobileLabelOffset: { x: 14, y: -3 },
+  },
   {
     capital: "Baku",
     lat: 40.4093,
     lon: 49.8671,
     telegram: fallbackTelegram,
-    labelOffset: { x: -7, y: -3 },
+    labelOffset: { x: -16, y: -12 },
+    mobileLabelOffset: { x: 2, y: -12 },
     align: "right",
   },
   {
@@ -56,11 +81,12 @@ const capitalMarkers: CapitalMarker[] = [
     lat: 37.9601,
     lon: 58.3261,
     telegram: fallbackTelegram,
-    labelOffset: { x: -8, y: 7 },
+    labelOffset: { x: -18, y: 18 },
+    mobileLabelOffset: { x: 0, y: 18 },
     align: "right",
   },
-  { capital: "Bishkek", lat: 42.8746, lon: 74.5698, telegram: fallbackTelegram, labelOffset: { x: 8, y: 4 } },
-  { capital: "Kabul", lat: 34.5553, lon: 69.2075, telegram: fallbackTelegram, labelOffset: { x: 7, y: 9 } },
+  { capital: "Bishkek", lat: 42.8746, lon: 74.5698, telegram: fallbackTelegram, labelOffset: { x: 15, y: 9 } },
+  { capital: "Kabul", lat: 34.5553, lon: 69.2075, telegram: fallbackTelegram, labelOffset: { x: 12, y: 20 } },
 ];
 
 type WorldLineString = number[][];
@@ -69,9 +95,16 @@ type WorldMesh = {
   coordinates: WorldLineString[];
 };
 
-const topology = countriesTopology as unknown as Topology;
-const countryObject = topology.objects.countries as GeometryObject;
-const countryMesh = mesh(topology, countryObject) as WorldMesh;
+type WorldTopology = {
+  objects: {
+    countries: unknown;
+  };
+};
+
+const topology = countriesTopology as WorldTopology;
+const countryObject = topology.objects.countries;
+const createCountryMesh = mesh as unknown as (topology: WorldTopology, object: unknown) => WorldMesh;
+const countryMesh = createCountryMesh(topology, countryObject);
 
 function latLonToVector(lat: number, lon: number, radius = 1.18) {
   const latRad = THREE.MathUtils.degToRad(lat);
@@ -158,7 +191,6 @@ function createBoundaryLines(radius = 1.136) {
 
   countryMesh.coordinates.forEach((line) => {
     if (line.length < 2) return;
-    const first = line[0];
     const isTargetRegion = line.some(([lon, lat]) => lon >= 44 && lon <= 121 && lat >= 30 && lat <= 53);
     const points = line.map(([lon, lat]) => latLonToVector(lat, lon, radius));
     const material = new THREE.LineBasicMaterial({
@@ -168,7 +200,7 @@ function createBoundaryLines(radius = 1.136) {
     });
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     geometry.computeBoundingSphere();
-    group.add(new THREE.Line(first ? geometry : geometry, material));
+    group.add(new THREE.Line(geometry, material));
   });
 
   return group;
@@ -193,11 +225,18 @@ function createSurfaceRing(lat: number, lon: number, radius = 1.215) {
   return group;
 }
 
-export function GlobeMap({ countries, telegramLabel }: { countries: { name: string }[]; telegramLabel: string }) {
+export function GlobeMap({
+  countries,
+  telegramLabel,
+}: {
+  countries: { name: string; note: string }[];
+  telegramLabel: string;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>();
-  const zoomRef = useRef(1);
-  const [zoom, setZoom] = useState(1);
+  const interactiveRef = useRef(false);
+  const [isInteractive, setIsInteractive] = useState(false);
+  const [expandedCountry, setExpandedCountry] = useState<number | null>(null);
   const [markerViews, setMarkerViews] = useState<MarkerView[]>(() =>
     capitalMarkers.map((marker) => ({
       x: 50,
@@ -210,20 +249,12 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
     })),
   );
 
-  const changeZoom = useCallback((next: number | ((current: number) => number)) => {
-    setZoom((current) => {
-      const raw = typeof next === "function" ? next(current) : next;
-      const clamped = THREE.MathUtils.clamp(raw, 0.72, 2.65);
-      zoomRef.current = clamped;
-      return clamped;
-    });
-  }, []);
-
   const markers = useMemo<GlobeMarker[]>(
     () =>
       capitalMarkers.map((marker, index) => ({
         ...marker,
         country: countries[index]?.name ?? marker.capital,
+        note: countries[index]?.note ?? "",
       })),
     [countries],
   );
@@ -260,17 +291,6 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
     globe.add(boundaries);
     globe.add(createGlobeGrid());
 
-    const atmosphere = new THREE.Mesh(
-      new THREE.SphereGeometry(1.17, 72, 72),
-      new THREE.MeshBasicMaterial({
-        color: 0xffd200,
-        transparent: true,
-        opacity: 0.08,
-        side: THREE.BackSide,
-      }),
-    );
-    globe.add(atmosphere);
-
     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffd200 });
     markers.forEach((marker) => {
       const point = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 16), markerMaterial);
@@ -302,8 +322,10 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
 
     function resize() {
       const rect = container.getBoundingClientRect();
-      renderer.setSize(rect.width, rect.height, false);
-      camera.aspect = rect.width / rect.height;
+      const width = Math.max(1, rect.width);
+      const height = Math.max(1, rect.height);
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
     }
 
@@ -312,8 +334,7 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
     resize();
 
     const rotation = {
-      x: -0.22,
-      y: -THREE.MathUtils.degToRad(78),
+      ...initialRotation,
     };
     const drag = {
       active: false,
@@ -332,17 +353,31 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
         const rotated = vector.clone().applyAxisAngle(yAxis, rotation.y);
         rotated.applyAxisAngle(xAxis, rotation.x);
         const projected = rotated.clone().project(camera);
+        const marker = capitalMarkers[index];
+
+        if (!Number.isFinite(projected.x) || !Number.isFinite(projected.y)) {
+          return {
+            x: 50,
+            y: 50,
+            labelX: 50,
+            labelY: 50,
+            align: marker.align ?? "left",
+            visible: false,
+            scale: 0.72,
+          };
+        }
+
         const visible = rotated.z > -0.18;
         const pointX = ((projected.x + 1) / 2) * 100;
         const pointY = ((-projected.y + 1) / 2) * 100;
-        const offset = capitalMarkers[index].labelOffset;
+        const offset = container.clientWidth < 640 ? marker.mobileLabelOffset ?? marker.labelOffset : marker.labelOffset;
 
         return {
           x: pointX,
           y: pointY,
           labelX: pointX + offset.x,
           labelY: pointY + offset.y,
-          align: capitalMarkers[index].align ?? "left",
+          align: marker.align ?? "left",
           visible,
           scale: visible ? Math.max(0.72, Math.min(1.08, 1 + rotated.z * 0.08)) : 0.72,
         };
@@ -352,14 +387,19 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
     }
 
     function animate() {
-      camera.position.z = THREE.MathUtils.lerp(camera.position.z, 4.25 / zoomRef.current, 0.14);
-      camera.updateProjectionMatrix();
       updateMarkers();
       renderer.render(scene, camera);
       frameRef.current = window.requestAnimationFrame(animate);
     }
 
     function handlePointerDown(event: PointerEvent) {
+      if ((event.target as Element).closest("a, button")) return;
+
+      if (!interactiveRef.current) {
+        interactiveRef.current = true;
+        setIsInteractive(true);
+      }
+
       drag.active = true;
       drag.x = event.clientX;
       drag.y = event.clientY;
@@ -379,21 +419,17 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
 
     function handlePointerUp(event: PointerEvent) {
       drag.active = false;
-      container.releasePointerCapture(event.pointerId);
+      if (container.hasPointerCapture(event.pointerId)) {
+        container.releasePointerCapture(event.pointerId);
+      }
       container.style.cursor = "grab";
     }
 
-    function handleWheel(event: WheelEvent) {
-      event.preventDefault();
-      changeZoom((current) => current + (event.deltaY > 0 ? -0.12 : 0.12));
-    }
-
-    container.style.cursor = "grab";
+    container.style.cursor = interactiveRef.current ? "grab" : "pointer";
     container.addEventListener("pointerdown", handlePointerDown);
     container.addEventListener("pointermove", handlePointerMove);
     container.addEventListener("pointerup", handlePointerUp);
     container.addEventListener("pointercancel", handlePointerUp);
-    container.addEventListener("wheel", handleWheel, { passive: false });
     frameRef.current = window.requestAnimationFrame(animate);
 
     return () => {
@@ -402,13 +438,10 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
       container.removeEventListener("pointermove", handlePointerMove);
       container.removeEventListener("pointerup", handlePointerUp);
       container.removeEventListener("pointercancel", handlePointerUp);
-      container.removeEventListener("wheel", handleWheel);
       if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
       renderer.dispose();
       sphere.geometry.dispose();
       sphere.material.dispose();
-      atmosphere.geometry.dispose();
-      atmosphere.material.dispose();
       landMass.geometry.dispose();
       landMass.material.dispose();
       boundaries.children.forEach((child) => {
@@ -418,81 +451,106 @@ export function GlobeMap({ countries, telegramLabel }: { countries: { name: stri
       });
       markerMaterial.dispose();
     };
-  }, [changeZoom, markers]);
+  }, [markers]);
 
   return (
-    <div className="relative aspect-[1.58] min-h-[360px] touch-none overflow-hidden bg-transparent">
+    <div
+      className="relative aspect-square min-h-[340px] touch-pan-y overflow-visible bg-transparent sm:aspect-[1.58] sm:min-h-[360px]"
+      data-interactive={isInteractive}
+    >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0_48%,rgba(4,4,3,0.12)_72%,rgba(4,4,3,0.5)_100%)]" />
-      <div className="absolute left-4 top-4 z-10 rounded-full border border-primary/25 bg-black/50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary backdrop-blur">
-        Drag / Zoom / Telegram
-      </div>
-      <div className="absolute bottom-4 right-4 z-30 flex items-center gap-2 rounded-full border border-white/10 bg-black/55 p-1.5 text-copy shadow-card backdrop-blur">
-        <button
-          type="button"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={() => changeZoom((current) => current - 0.18)}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg font-bold text-primary transition hover:bg-primary hover:text-black"
-          aria-label="Zoom out"
-        >
-          -
-        </button>
-        <span className="min-w-14 text-center text-xs font-bold text-muted">{Math.round(zoom * 100)}%</span>
-        <button
-          type="button"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={() => changeZoom((current) => current + 0.18)}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-lg font-bold text-black shadow-[0_0_20px_rgba(255,210,0,0.34)] transition hover:bg-white"
-          aria-label="Zoom in"
-        >
-          +
-        </button>
-      </div>
+
+      <svg
+        className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {markerViews.map((view, index) => (
+          <line
+            key={`marker-line-${markers[index].capital}`}
+            x1={view.x}
+            y1={view.y}
+            x2={view.labelX}
+            y2={view.labelY}
+            stroke="rgba(255, 210, 0, 0.16)"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+            opacity={view.visible ? 1 : 0}
+          />
+        ))}
+      </svg>
 
       {markers.map((marker, index) => {
         const view = markerViews[index];
+        const isExpanded = expandedCountry === index;
 
         return (
           <div key={`${marker.country}-${marker.capital}`}>
-          <a
-            href={marker.telegram}
-            target="_blank"
-            rel="noreferrer"
-            onPointerDown={(event) => event.stopPropagation()}
-            className="group absolute z-30 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
-            style={{
-              left: `${view.x}%`,
-              top: `${view.y}%`,
-              opacity: view.visible ? 1 : 0,
-              pointerEvents: view.visible ? "auto" : "none",
-              transform: `translate(-50%, -50%) scale(${view.scale})`,
-            }}
-            aria-label={`${telegramLabel} ${marker.country}`}
-          >
-            <span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#229ED9]/35 bg-[#229ED9]/15" />
-            <span className="relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#229ED9] shadow-[0_0_16px_rgba(34,158,217,0.85)] ring-2 ring-black/45">
-              <TelegramIcon className="h-2.5 w-2.5 text-white" />
-            </span>
-          </a>
-          <span
-            key={`${marker.country}-${marker.capital}-label`}
-            className="pointer-events-none absolute z-10 hidden min-w-max -translate-y-1/2 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-[11px] font-semibold text-copy shadow-card backdrop-blur sm:block"
-            style={{
-              left: `${view.labelX}%`,
-              top: `${view.labelY}%`,
-              opacity: view.visible ? 1 : 0,
-              transform: `translate(${view.align === "right" ? "-100%" : "0"}, -50%) scale(${view.scale})`,
-            }}
-          >
-            <span
-              className="absolute top-1/2 h-px w-7 bg-primary/40"
+            <a
+              href={marker.telegram}
+              target="_blank"
+              rel="noreferrer"
+              onPointerDown={(event) => event.stopPropagation()}
+              className="absolute z-20 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
               style={{
-                left: view.align === "right" ? "100%" : "auto",
-                right: view.align === "left" ? "100%" : "auto",
+                left: `${view.x}%`,
+                top: `${view.y}%`,
+                opacity: view.visible ? 1 : 0,
+                pointerEvents: view.visible ? "auto" : "none",
+                transform: `translate(-50%, -50%) scale(${view.scale})`,
               }}
-            />
-            {marker.country} / {marker.capital}
-          </span>
+              aria-label={`${telegramLabel} ${marker.country}`}
+            >
+              <span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#229ED9]/35 bg-[#229ED9]/15" />
+              <span className="relative flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#229ED9] shadow-[0_0_16px_rgba(34,158,217,0.85)] ring-2 ring-black/45">
+                <TelegramIcon className="h-2.5 w-2.5 text-white" />
+              </span>
+            </a>
+
+            <div
+              className={`group absolute block min-w-max -translate-y-1/2 transition-opacity duration-200 hover:z-50 focus-within:z-50 ${
+                isExpanded ? "z-50" : "z-30"
+              }`}
+              style={{
+                left: `${view.labelX}%`,
+                top: `${view.labelY}%`,
+                opacity: view.visible ? 1 : 0,
+                pointerEvents: view.visible ? "auto" : "none",
+                transform: `translate(${view.align === "right" ? "-100%" : "0"}, -50%) scale(${view.scale})`,
+              }}
+              onPointerDown={(event) => event.stopPropagation()}
+              dir="ltr"
+            >
+              <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/75 px-2 py-1 shadow-card backdrop-blur sm:px-2.5">
+                <WavingFlag
+                  flag={countryFlags[index]}
+                  className="text-xs sm:text-base"
+                  delay={index * -0.14}
+                />
+                <button
+                  type="button"
+                  onClick={() => setExpandedCountry((current) => (current === index ? null : index))}
+                  className="max-w-[78px] truncate text-[10px] font-semibold text-copy sm:max-w-none sm:text-[11px]"
+                  aria-expanded={isExpanded}
+                  tabIndex={view.visible ? 0 : -1}
+                >
+                  {marker.country}
+                </button>
+              </div>
+
+              <div
+                className={`pointer-events-none absolute top-full z-40 mt-1 w-36 transition-[opacity,transform] duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 sm:w-56 ${
+                  view.align === "right" || index === 0 ? "right-0" : "left-0"
+                } ${
+                  isExpanded ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
+                }`}
+              >
+                <p className="bg-black/85 px-2 py-1.5 text-left text-[10px] font-normal leading-4 text-copy-muted sm:px-2.5 sm:py-2" dir="auto">
+                  {marker.note}
+                </p>
+              </div>
+            </div>
           </div>
         );
       })}

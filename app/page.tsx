@@ -1,10 +1,9 @@
 import { Footer } from "@/components/layout/footer";
 import { FloatingTelegram } from "@/components/layout/floating-telegram";
 import { Header } from "@/components/layout/header";
-import { LoadingSplash } from "@/components/layout/loading-splash";
 import {
-  AboutSection,
   AudiencesSection,
+  AboutSection,
   BenefitsSection,
   ContactFormSection,
   EarningsCalculatorSection,
@@ -18,15 +17,14 @@ import {
 export default function Home() {
   return (
     <main className="min-h-screen bg-transparent text-copy">
-      <LoadingSplash />
       <Header />
       <HeroSection />
       <AboutSection />
-      <HowItWorksSection />
       <BenefitsSection />
-      <EarningsCalculatorSection />
-      <GeographySection />
       <AudiencesSection />
+      <EarningsCalculatorSection />
+      <HowItWorksSection />
+      <GeographySection />
       <ProductHighlightsSection />
       <FaqSection />
       <ContactFormSection />

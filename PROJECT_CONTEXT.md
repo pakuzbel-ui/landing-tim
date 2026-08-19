@@ -82,7 +82,6 @@ Current important files:
 - `app/page.tsx`
 - `app/layout.tsx`
 - `app/globals.css`
-- `data/site.ts`
 - `data/i18n.ts`
 - `lib/locale-provider.tsx`
 - `components/layout/header.tsx`

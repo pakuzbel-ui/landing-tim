@@ -6,22 +6,44 @@ type ButtonProps = {
   href: string;
   children: ReactNode;
   variant?: "primary" | "ghost";
+  leadingIcon?: ReactNode;
+  compact?: boolean;
   className?: string;
 };
 
-export function Button({ href, children, variant = "primary", className }: ButtonProps) {
+export function Button({ href, children, variant = "primary", leadingIcon, compact = false, className }: ButtonProps) {
   return (
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition duration-300 [clip-path:polygon(0_0,calc(100%-12px)_0,100%_12px,100%_100%,12px_100%,0_calc(100%-12px))]",
+        "group inline-flex min-h-11 items-center py-2 text-sm font-semibold transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
+        compact ? "gap-2" : "gap-3",
         variant === "primary"
-          ? "bg-primary text-[#05101A] shadow-[0_0_0_1px_rgba(255,211,61,0.18),0_20px_60px_rgba(255,211,61,0.16)] hover:-translate-y-0.5 hover:bg-[#ffe47a]"
-          : "border border-white/12 bg-[#07111d]/70 text-copy hover:border-primary/45 hover:bg-[#07111d]/82",
+          ? "text-copy hover:text-primary"
+          : "text-copy-muted hover:text-copy",
         className,
       )}
     >
-      {children}
+      <span className="flex h-5 min-w-5 shrink-0 items-center justify-center text-primary" aria-hidden="true">
+        {leadingIcon ?? <span className="h-2 w-2 bg-primary shadow-[0_0_14px_rgba(255,210,0,0.48)]" />}
+      </span>
+      <span>{children}</span>
+      <span
+        className={cn(
+          "h-px shrink-0 bg-primary/45 transition-[width,background-color] duration-300 group-hover:bg-primary",
+          compact ? "hidden w-4 group-hover:w-6 2xl:block" : "w-7 group-hover:w-10",
+        )}
+        aria-hidden="true"
+      />
+      <span
+        className={cn(
+          "flex shrink-0 items-center justify-center rounded-full border border-primary/45 leading-none text-primary transition duration-300 group-hover:translate-x-1 group-hover:border-primary group-hover:bg-primary group-hover:text-black",
+          compact ? "h-7 w-7 text-sm" : "h-8 w-8 text-base",
+        )}
+        aria-hidden="true"
+      >
+        →
+      </span>
     </Link>
   );
 }

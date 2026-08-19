@@ -1,46 +1,31 @@
 "use client";
 
 import { Container } from "@/components/ui/container";
-import { Card } from "@/components/ui/card";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { CoverageIcon, HeadsetIcon, MapPinIcon, NetworkIcon, TimerIcon, WalletIcon } from "@/components/ui/icons";
 import { useSiteContent } from "@/lib/locale-provider";
-
-const icons = [WalletIcon, TimerIcon, MapPinIcon, NetworkIcon, HeadsetIcon, CoverageIcon];
 
 export function BenefitsSection() {
   const content = useSiteContent();
 
   return (
-    <section id="benefits" className="py-14 sm:py-18">
+    <section id="benefits" className="py-16 sm:py-20">
       <Container>
-        <Reveal>
-          <SectionHeading
-            eyebrow={content.benefits.eyebrow}
-            title={content.benefits.title}
-            description={content.benefits.description}
-          />
-        </Reveal>
+        <SectionHeading
+          eyebrow={content.benefits.eyebrow}
+          title={content.benefits.title}
+          description={content.benefits.description}
+        />
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {content.benefits.items.map((item, index) => {
-            const Icon = icons[index];
-
-            return (
-              <Reveal key={item.title} delay={index * 90}>
-                <Card className="h-full p-5 sm:p-6">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
-                    <Icon className="h-[18px] w-[18px]" />
-                  </div>
-                  <h3 className="mt-5 font-display text-xl font-semibold leading-tight text-copy sm:text-[1.35rem]">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-copy-muted">{item.description}</p>
-                </Card>
-              </Reveal>
-            );
-          })}
+        <div className="mt-10 grid gap-x-8 gap-y-2 md:grid-cols-2 xl:grid-cols-3">
+          {content.benefits.items.map((item, index) => (
+            <div key={item.title} className="border-t border-white/15 py-6">
+              <div className="font-display text-xs font-semibold text-primary">0{index + 1}</div>
+              <h3 className="mt-4 font-display text-xl font-semibold leading-tight text-copy sm:text-2xl">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-copy-muted">{item.description}</p>
+            </div>
+          ))}
         </div>
       </Container>
     </section>

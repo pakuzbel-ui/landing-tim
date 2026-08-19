@@ -17,5 +17,5 @@ npm run dev
 - `components/layout` — header и footer
 - `components/sections` — секции landing page
 - `components/ui` — переиспользуемые UI-компоненты
-- `data/site.ts` — все основные текстовые данные и массивы
+- `data/i18n.ts` — текстовые данные, переводы и массивы
 - `lib` — утилиты
