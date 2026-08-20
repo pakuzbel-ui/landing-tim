@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { ScrollReset } from "@/components/layout/scroll-reset";
+import { SiteLoader } from "@/components/layout/site-loader";
 import { LocaleProvider } from "@/lib/locale-provider";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <SiteLoader />
         <LocaleProvider>
           <ScrollReset />
           {children}

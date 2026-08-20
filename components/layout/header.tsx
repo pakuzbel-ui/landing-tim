@@ -9,9 +9,9 @@ import { useLocale, useSiteContent } from "@/lib/locale-provider";
 import { TelegramIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { WavingFlag } from "@/components/ui/waving-flag";
 import { TopAgentTicker } from "@/components/layout/top-agent-ticker";
+import { telegramByLocale } from "@/data/telegram";
 
 const whatsappHref = "https://wa.me/?text=Hello%20TeamCash";
-const telegramHref = "https://t.me/bigboyy_1";
 const utilityButtonClass = "inline-flex min-w-[48px] items-center justify-center gap-2 px-2 py-2 text-xs font-semibold text-copy-muted transition hover:text-copy";
 const localeFlags: Record<Locale, string> = {
   ru: "🇷🇺",
@@ -70,6 +70,7 @@ export function Header() {
   const { locale, setLocale } = useLocale();
   const content = useSiteContent();
   const activeLocale = localeOptions.find((item) => item.code === locale);
+  const telegramHref = telegramByLocale[locale].href;
 
   const closeCalculator = useCallback(() => {
     setCalculatorOpen(false);
@@ -294,15 +295,14 @@ export function Header() {
           className="absolute inset-x-0 top-full z-50 border-t border-primary/20 bg-[#030506] shadow-[0_28px_70px_rgba(0,0,0,0.72)] xl:hidden"
         >
           <nav className="px-4 py-3 sm:px-6">
-            {content.navItems.map((item, index) => (
+            {content.navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex min-h-12 items-center justify-between gap-4 border-b border-white/10 py-3 text-base font-medium text-copy-muted transition hover:text-copy"
+                className="flex min-h-12 items-center border-b border-white/10 py-3 text-base font-medium text-copy-muted transition hover:text-copy"
               >
                 <span>{item.label}</span>
-                <span className="font-display text-xs text-primary">0{index + 1}</span>
               </a>
             ))}
 

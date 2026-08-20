@@ -9,7 +9,7 @@ export function AudiencesSection() {
   const content = useSiteContent();
 
   return (
-    <section id="partners" className="border-y border-white/10 py-16 sm:py-20">
+    <section id="partners" className="mobile-premium-section border-y border-white/10 py-16 sm:py-20">
       <Container>
         <SectionHeading
           eyebrow={content.audiences.eyebrow}
@@ -17,11 +17,11 @@ export function AudiencesSection() {
           description={content.audiences.description}
         />
 
-        <div className="mt-10 grid gap-0 border-t border-white/15 lg:grid-cols-3">
+        <div className="mobile-role-grid mt-10 grid gap-0 border-t border-white/15 lg:grid-cols-3">
           {content.audiences.items.map((audience, index) => (
             <div
               key={audience.title}
-              className="border-b border-white/15 py-7 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+              className="mobile-role-card flex h-full flex-col border-b border-white/15 py-7 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
             >
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
                 Role 0{index + 1}
@@ -30,7 +30,7 @@ export function AudiencesSection() {
                 {audience.title}
               </h3>
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-6 flex-1 space-y-4">
                 {audience.items.map((item) => (
                   <div key={item} className="grid grid-cols-[8px_1fr] gap-3 text-sm leading-6 text-copy-muted">
                     <span className="mt-2 h-1.5 w-1.5 bg-primary" />

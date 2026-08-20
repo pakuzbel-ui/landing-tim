@@ -6,12 +6,12 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { FacebookIcon, InstagramIcon, TelegramIcon } from "@/components/ui/icons";
 import { useLocale, useSiteContent } from "@/lib/locale-provider";
 import type { Locale } from "@/data/i18n";
+import { telegramByLocale } from "@/data/telegram";
 
 const socialLinks = [
   {
     label: "Telegram",
     textKey: "telegram",
-    href: "https://t.me/bigboyy_1",
     icon: TelegramIcon,
     tone: "text-[#54bcec]",
   },
@@ -30,6 +30,57 @@ const socialLinks = [
     tone: "text-[#5a9df5]",
   },
 ];
+
+const googleScriptUrl =
+  "https://script.google.com/macros/s/AKfycbwh6YDVs_G_xCnRQSXaPdDDPkOBQr_CrlzlS2FdUvj0KM7AVVIG8LmgKhn_1YNxbnGrAQ/exec";
+
+const submissionCopy: Record<Locale, { sending: string; success: string; error: string }> = {
+  ru: {
+    sending: "Отправляем заявку…",
+    success: "Заявка отправлена. Мы скоро свяжемся с вами.",
+    error: "Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.",
+  },
+  en: {
+    sending: "Sending application…",
+    success: "Application sent. We will contact you soon.",
+    error: "Could not send the application. Check your connection and try again.",
+  },
+  mn: {
+    sending: "Хүсэлтийг илгээж байна…",
+    success: "Хүсэлт илгээгдлээ. Бид удахгүй холбогдоно.",
+    error: "Хүсэлтийг илгээж чадсангүй. Дахин оролдоно уу.",
+  },
+  tg: {
+    sending: "Дархост фиристода мешавад…",
+    success: "Дархост фиристода шуд. Мо ба зудӣ тамос мегирем.",
+    error: "Дархост фиристода нашуд. Лутфан боз кӯшиш кунед.",
+  },
+  uz: {
+    sending: "Ariza yuborilmoqda…",
+    success: "Ariza yuborildi. Tez orada siz bilan bog‘lanamiz.",
+    error: "Arizani yuborib bo‘lmadi. Qayta urinib ko‘ring.",
+  },
+  az: {
+    sending: "Müraciət göndərilir…",
+    success: "Müraciət göndərildi. Tezliklə sizinlə əlaqə saxlayacağıq.",
+    error: "Müraciət göndərilmədi. Yenidən cəhd edin.",
+  },
+  tk: {
+    sending: "Arza iberilýär…",
+    success: "Arza iberildi. Tiz wagtda siziň bilen habarlaşarys.",
+    error: "Arza iberilmedi. Gaýtadan synanyşyň.",
+  },
+  ky: {
+    sending: "Өтүнмө жөнөтүлүүдө…",
+    success: "Өтүнмө жөнөтүлдү. Жакында сиз менен байланышабыз.",
+    error: "Өтүнмө жөнөтүлгөн жок. Кайра аракет кылыңыз.",
+  },
+  fa: {
+    sending: "درخواست در حال ارسال است…",
+    success: "درخواست ارسال شد. به‌زودی با شما تماس می‌گیریم.",
+    error: "درخواست ارسال نشد. دوباره تلاش کنید.",
+  },
+};
 
 type ContactCopy = {
   socialEyebrow: string;
@@ -144,29 +195,42 @@ export function ContactFormSection() {
   const content = useSiteContent();
   const { locale } = useLocale();
   const copy = contactCopy[locale];
+  const countryTelegram = telegramByLocale[locale];
   const [form, setForm] = useState(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
 
-    const subject = encodeURIComponent(content.contact.emailSubject);
-    const body = encodeURIComponent(
-      [
-        `${content.contact.fields.name}: ${form.name}`,
-        `${content.contact.fields.company}: ${form.company}`,
-        `${content.contact.fields.country}: ${form.country}`,
-        `${content.contact.fields.telegram}: ${form.telegram}`,
-        "",
-        `${content.contact.fields.details}:`,
-        form.details,
-      ].join("\n"),
-    );
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
 
-    window.location.href = `mailto:partnerships@teamcash.global?subject=${subject}&body=${body}`;
+    try {
+      await fetch(googleScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          ...form,
+          website: "",
+          locale,
+          page: window.location.href,
+        }),
+      });
+
+      setForm(initialState);
+      setSubmitStatus("success");
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
-    <section id="contact" className="py-20 sm:py-24">
+    <section id="contact" className="mobile-premium-section py-20 sm:py-24">
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
           <div className="w-full">
@@ -176,22 +240,23 @@ export function ContactFormSection() {
               description={content.contact.description}
             />
 
-            <div className="mt-8">
+            <div className="mobile-social-panel mt-8">
               <div className="text-sm uppercase tracking-[0.24em] text-copy-muted">{copy.socialEyebrow}</div>
               <div className="mt-2 font-display text-xl font-semibold text-copy">{copy.socialTitle}</div>
               <p className="mt-2 text-sm leading-6 text-copy-muted">{copy.socialDescription}</p>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-3">
+              <div className="mobile-social-list mt-5 grid gap-4 sm:grid-cols-3">
                 {socialLinks.map((item) => {
                   const Icon = item.icon;
+                  const isTelegram = item.textKey === "telegram";
 
                   return (
                     <a
                       key={item.label}
-                      href={item.href}
+                      href={isTelegram ? countryTelegram.href : item.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-3 py-2"
+                      className="mobile-social-link flex items-center gap-3 py-2"
                     >
                       <span className={`flex h-8 w-8 shrink-0 items-center justify-center ${item.tone}`}>
                         <Icon className="h-5 w-5" />
@@ -199,7 +264,7 @@ export function ContactFormSection() {
                       <span>
                         <span className="block text-sm font-semibold text-copy">{item.label}</span>
                         <span className="block text-xs text-copy-muted">
-                          {copy.links[item.textKey as keyof typeof copy.links]}
+                          {isTelegram ? countryTelegram.handle : copy.links[item.textKey as keyof typeof copy.links]}
                         </span>
                       </span>
                     </a>
@@ -209,7 +274,7 @@ export function ContactFormSection() {
             </div>
           </div>
 
-          <div className="py-2">
+          <div className="mobile-contact-form py-2">
             <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field
@@ -257,10 +322,20 @@ export function ContactFormSection() {
 
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-black"
+                  disabled={isSubmitting}
+                  className="inline-flex w-full items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-black transition disabled:cursor-wait disabled:opacity-65"
                 >
-                  {content.contact.submit}
+                  {isSubmitting ? submissionCopy[locale].sending : content.contact.submit}
                 </button>
+                {submitStatus !== "idle" ? (
+                  <p
+                    className={`text-center text-sm ${submitStatus === "success" ? "text-primary" : "text-red-400"}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {submissionCopy[locale][submitStatus]}
+                  </p>
+                ) : null}
             </form>
           </div>
         </div>

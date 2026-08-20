@@ -1,12 +1,19 @@
+"use client";
+
 import { TelegramIcon } from "@/components/ui/icons";
+import { telegramByLocale } from "@/data/telegram";
+import { useLocale } from "@/lib/locale-provider";
 
 export function FloatingTelegram() {
+  const { locale } = useLocale();
+  const telegram = telegramByLocale[locale];
+
   return (
     <a
-      href="https://t.me/bigboyy_1"
+      href={telegram.href}
       target="_blank"
       rel="noreferrer"
-      aria-label="Message on Telegram"
+      aria-label={`Message ${telegram.handle} on Telegram`}
       className="floating-telegram h-14 w-14 justify-center rounded-full text-sm font-semibold transition"
     >
       <TelegramIcon className="h-6 w-6 text-white" />

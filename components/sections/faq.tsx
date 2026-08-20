@@ -5,23 +5,12 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { useSiteContent } from "@/lib/locale-provider";
 
-const itemWidths = [
-  "lg:col-span-7",
-  "lg:col-span-5 lg:mt-10",
-  "lg:col-span-5 lg:ml-8",
-  "lg:col-span-7 lg:mt-5",
-  "lg:col-span-7",
-  "lg:col-span-5 lg:mt-10",
-  "lg:col-span-5 lg:ml-8",
-  "lg:col-span-7 lg:mt-5",
-];
-
 export function FaqSection() {
   const content = useSiteContent();
   const [openIndex, setOpenIndex] = useState(-1);
 
   return (
-    <section id="faq" className="py-14 sm:py-18">
+    <section id="faq" className="mobile-premium-section py-14 sm:py-18">
       <Container>
         <SectionHeading
           eyebrow={content.faq.eyebrow}
@@ -29,7 +18,7 @@ export function FaqSection() {
           description={content.faq.description}
         />
 
-        <div className="mt-10 grid gap-x-12 gap-y-5 lg:grid-cols-12 xl:gap-x-20">
+        <div className="mobile-faq-list mt-10 grid gap-x-12 gap-y-5 lg:grid-cols-2 xl:gap-x-20">
           {content.faq.items.map((item, index) => {
             const isOpen = openIndex === index;
             const answerId = `faq-answer-${index}`;
@@ -37,12 +26,12 @@ export function FaqSection() {
             return (
               <div
                 key={item.question}
-                className={`border-t border-white/15 pt-5 ${itemWidths[index % itemWidths.length]}`}
+                className="mobile-faq-item border-t border-white/15 pt-5"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex((current) => (current === index ? -1 : index))}
-                  className="group inline-flex max-w-full items-center gap-3 text-left"
+                  className="group flex w-full items-center justify-between gap-4 text-left"
                   aria-expanded={isOpen}
                   aria-controls={answerId}
                 >

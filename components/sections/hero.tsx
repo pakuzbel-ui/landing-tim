@@ -17,12 +17,12 @@ export function HeroSection() {
               {content.hero.eyebrow}
             </div>
 
-            <h1 className="mt-6 max-w-5xl font-display text-4xl font-semibold leading-[0.98] tracking-tight text-copy drop-shadow-[0_3px_14px_rgba(0,0,0,0.95)] sm:text-5xl lg:text-6xl 2xl:text-7xl">
+            <h1 className="mt-6 max-w-[22rem] font-display text-[2.35rem] font-semibold leading-[0.98] tracking-tight text-copy drop-shadow-[0_3px_14px_rgba(0,0,0,0.95)] sm:max-w-5xl sm:text-5xl lg:text-6xl 2xl:text-7xl">
               {content.hero.titleLead}
               <span className="block text-primary">{content.hero.titleAccent}</span>
             </h1>
 
-            <p className="mt-6 max-w-3xl text-base leading-7 text-copy-muted drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] sm:text-lg sm:leading-8">
+            <p className="mt-6 max-w-[22rem] text-[15px] leading-7 text-copy-muted drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] sm:max-w-3xl sm:text-lg sm:leading-8">
               {content.hero.description}
             </p>
 
@@ -40,7 +40,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          <aside className="border-t border-primary/35 pt-6 xl:border-l xl:border-t-0 xl:pl-8 xl:pt-0">
+          <aside className="mobile-hero-panel w-full border-t border-primary/35 pt-6 xl:border-l xl:border-t-0 xl:pl-8 xl:pt-0">
             <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] sm:text-xs">
               <span className="text-primary">{content.hero.panelEyebrow}</span>
               <span className="flex items-center gap-2 text-copy-muted">
@@ -64,9 +64,9 @@ export function HeroSection() {
                 {content.hero.stackTitle}
               </div>
               <div className="mt-3 space-y-2.5">
-                {content.hero.stackItems.map((item, index) => (
-                  <div key={item} className="grid grid-cols-[24px_1fr] gap-3 text-sm leading-5 text-copy-muted">
-                    <span className="font-display text-xs font-semibold text-primary">0{index + 1}</span>
+                {content.hero.stackItems.map((item) => (
+                  <div key={item} className="grid grid-cols-[8px_1fr] gap-3 text-sm leading-5 text-copy-muted">
+                    <span className="mt-1.5 h-1.5 w-1.5 bg-primary shadow-[0_0_10px_rgba(255,210,0,0.35)]" />
                     <span>{item}</span>
                   </div>
                 ))}

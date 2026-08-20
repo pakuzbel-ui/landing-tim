@@ -11,6 +11,7 @@ import {
   GeographySection,
   HeroSection,
   HowItWorksSection,
+  PartnersSection,
   ProductHighlightsSection,
 } from "@/components/sections";
 
@@ -28,6 +29,7 @@ export default function Home() {
       <ProductHighlightsSection />
       <FaqSection />
       <ContactFormSection />
+      <PartnersSection />
       <Footer />
       <FloatingTelegram />
     </main>

@@ -10,6 +10,12 @@ type SectionPageProps = {
   };
 };
 
+export function generateStaticParams() {
+  return Array.from(allowedSections, (section) => ({ section }));
+}
+
+export const dynamicParams = false;
+
 export default function SectionPage({ params }: SectionPageProps) {
   if (!allowedSections.has(params.section)) {
     notFound();

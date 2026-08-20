@@ -18,7 +18,7 @@ export function GeographySection() {
   const content = useSiteContent();
 
   return (
-    <section id="geography" className="relative py-20 sm:py-24">
+    <section id="geography" className="mobile-premium-section relative py-20 sm:py-24">
       <Container>
         <div className="grid gap-10 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
             <div>
@@ -28,13 +28,13 @@ export function GeographySection() {
                 description={content.geography.description}
               />
 
-              <div className="mt-8 grid gap-4 sm:grid-cols-[0.42fr_0.58fr]">
-                <div className="py-2">
+              <div className="mobile-geography-summary mt-8 grid gap-4 sm:grid-cols-[0.42fr_0.58fr]">
+                <div className="mobile-geography-stat py-2">
                   <div className="font-display text-5xl font-semibold leading-none text-copy">{content.geography.summaryValue}</div>
                   <p className="mt-3 text-sm leading-6 text-copy-muted">{content.geography.summaryDescription}</p>
                 </div>
 
-                <div className="py-2">
+                <div className="mobile-geography-note py-2">
                   <p className="text-sm leading-7 text-copy-muted">{content.geography.summaryText}</p>
                 </div>
               </div>

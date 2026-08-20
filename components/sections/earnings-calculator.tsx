@@ -189,10 +189,10 @@ export function EarningsCalculatorSection() {
   }, [deposit, losses]);
 
   return (
-    <section id="calculator" className="py-10 sm:py-12 lg:py-14">
+    <section id="calculator" className="mobile-premium-section mobile-calculator py-10 sm:py-12 lg:py-14">
       <Container>
         <div className="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[minmax(260px,0.72fr)_minmax(0,1.45fr)] lg:items-center lg:gap-12">
-          <div className="text-left">
+          <div className="mobile-calculator-copy text-left">
           <div className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">{text.eyebrow}</div>
             <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-copy sm:text-4xl">
               {text.title}
@@ -202,13 +202,13 @@ export function EarningsCalculatorSection() {
             </p>
           </div>
 
-          <div className="min-w-0 border-y border-white/15 py-4 sm:py-5">
+          <div className="mobile-calculator-panel min-w-0 border-y border-white/15 py-4 sm:py-5">
             <div className="grid grid-cols-2 gap-3 sm:gap-5">
               <AmountField label={text.deposit} value={deposit} onChange={setDeposit} />
               <AmountField label={text.losses} value={losses} onChange={setLosses} />
             </div>
 
-            <div className="mt-4 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-3 sm:mt-5 sm:pt-4">
+            <div className="mobile-calculator-results mt-4 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-3 sm:mt-5 sm:pt-4">
               <ResultSummary title={text.agent} value={values.agent} note={text.agentNote} />
               <ResultSummary title={text.affiliate} value={values.affiliate} note={text.affiliateNote} />
               <ResultSummary title={text.total} value={values.total} note={text.totalNote} accent />

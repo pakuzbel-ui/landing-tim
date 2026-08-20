@@ -8,3 +8,4 @@ export { AudiencesSection } from "./audiences";
 export { ProductHighlightsSection } from "./product-highlights";
 export { FaqSection } from "./faq";
 export { ContactFormSection } from "./contact-form";
+export { PartnersSection } from "./partners";

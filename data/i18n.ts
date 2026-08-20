@@ -1108,6 +1108,7 @@ siteContent.uz = {
   header: { cta: "Ulanish", languages: "Tillar" },
   hero: {
     ...ru.hero,
+    eyebrow: "TeamCash hamkorlik dasturi",
     titleLead: "Affiliate va TeamCash,",
     titleAccent: "premium partnership tizimida birlashtirilgan",
     description:
@@ -1119,17 +1120,21 @@ siteContent.uz = {
       { value: "$5M+", label: "to'langan komissiyalar" },
       { value: "24/7", label: "hamkorlar va agentlar uchun yordam" },
     ],
+    panelEyebrow: "Hamkorlik imkoniyati",
     panelTitle: "affiliate-o'sish, mahalliy operatsiyalar va kengayuvchi monetizatsiya uchun yagona kontur",
+    panelStatus: "Hamkorlarni qabul qilish ochiq",
+    stackTitle: "Sizga mos keladi, agar sizda quyidagilar bo'lsa",
     stackItems: [
       "Affiliate Program va TeamCash bitta tizimda",
       "Har bir mamlakat bo'yicha lokal ekspertiza",
       "Boshlanishdan o'sishgacha jamoa ko'magi",
     ],
+    focusTitle: "TeamCash nima beradi",
     focusDescription:
       "TeamCash affiliate-o'sish, lokal jamoalar va to'lov operatsiyalarini MelBet yo'nalishi uchun bitta aniq o'sish modeliga birlashtiradi.",
   },
   about: {
-    eyebrow: "About",
+    eyebrow: "Biznes imkoniyati",
     title: "Bitta hamkorlik tizimidagi ikki o'sish modeli",
     description:
       "Biz affiliate-o'sish va TeamCash mahalliy to'lov operatsiyalarini bitta tushunarli tizimda birlashtiramiz.",
@@ -1137,6 +1142,199 @@ siteContent.uz = {
       { title: "Affiliate Program", description: "Trafik, promo-kod va performance-model orqali daromad olishni istagan hamkorlar uchun." },
       { title: "TeamCash Program", description: "Mahalliy bozor uchun depozitlar, yechib olish va tez operatsion ishlov berishga yo'naltirilgan." },
       { title: "Mintaqaviy ekspertiza", description: "Har bir yechim bozor xatti-harakati va to'lov odatlariga moslashtiriladi." },
+    ],
+  },
+  process: {
+    eyebrow: "Qanday boshlash kerak",
+    title: "Ish jarayonigacha uch qadam",
+    description:
+      "Avval mamlakat va hamkor rolini aniqlaymiz, keyin ish modelini kelishamiz va shundan so'ng ishga tushiramiz.",
+    steps: [
+      {
+        step: "01",
+        title: "Ariza qoldiring",
+        description: "Mamlakat, aloqa ma'lumotlari va sizni qiziqtirgan hamkorlik formatini ko'rsating.",
+      },
+      {
+        step: "02",
+        title: "Formatni kelishing",
+        description:
+          "Jamoangiz tajribasi va imkoniyatlarini muhokama qilib, mos rolni tanlaymiz: Payment Agent, E-payment Agent yoki Affiliate Partner.",
+      },
+      {
+        step: "03",
+        title: "Ish jarayonini sozlang",
+        description: "Ish boshlanishidan oldin rollar, aloqa kanallari va ish ssenariylarini belgilaymiz.",
+      },
+    ],
+  },
+  benefits: {
+    eyebrow: "Nega TeamCash",
+    title: "Oddiy hamkorlik havolasi emas, balki ishlaydigan biznes modeli",
+    description:
+      "Hamkor umumiy va'dalar emas, balki kelishilgan rol, aniq ish ssenariylari va jamoa bilan bevosita aloqaga ega bo'ladi.",
+    items: [
+      {
+        title: "Mos hamkorlik formati",
+        description: "Haqiqiy resurslaringiz va tajribangizga qarab Payment Agent, E-payment Agent yoki Affiliate Partner formatini tanlaymiz.",
+      },
+      {
+        title: "Mahalliy ish mantig'i",
+        description: "Har bir mamlakatning to'lov odatlari, aloqa usullari va o'ziga xos jihatlarini hisobga olamiz.",
+      },
+      {
+        title: "Boshlanishdagi yordam",
+        description: "Operatsiyalar boshlanishidan oldin rollar, aloqa kanallari va hamkorlik tartibini kelishamiz.",
+      },
+      {
+        title: "Jamoa bilan to'g'ridan-to'g'ri aloqa",
+        description: "Ish masalalari javobsiz qolmaydi: kontaktlar va mas'uliyat zonalarini oldindan belgilaymiz.",
+      },
+      {
+        title: "Tushunarli shartlar",
+        description: "Komissiya, hisob-kitob tartibi va talablarni ulanishdan oldin aynan sizning holatingiz uchun muhokama qilamiz.",
+      },
+      {
+        title: "Kengayish uchun asos",
+        description: "Ishlaydigan modelni yangi jarayonlar, jamoa, auditoriya va mahalliy tarmoq orqali rivojlantirish mumkin.",
+      },
+    ],
+  },
+  geography: {
+    eyebrow: "Geografiya",
+    title: "Hamkorlik tarmog'ini rivojlantirayotgan mamlakatlar",
+    description:
+      "Har bir hududda to'lov odatlari, ish ssenariylari va mahalliy auditoriya bilan aloqa xususiyatlarini hisobga olamiz.",
+    summaryValue: "7",
+    summaryDescription: "TeamCash hamkorligini rivojlantirish mamlakati",
+    summaryText:
+      "Har bir mamlakat o'z to'lov mantig'iga ega alohida bozor. TeamCash bu bozorlarni yordam, tajriba va aniq operatsion tizimga ega yagona hamkorlik tarmog'iga birlashtiradi.",
+    countries: [
+      { name: "Mongoliya", note: "Kuchli mahalliy aloqa va foydalanuvchi xatti-harakatlarini chuqur tushunish." },
+      { name: "Tojikiston", note: "Mahalliy bozor dinamikasi va agentlar bilan moslashuvchan ishlash." },
+      { name: "O'zbekiston", note: "Kengayish va barqaror to'lov ssenariylariga e'tibor." },
+      { name: "Ozarbayjon", note: "Yuqori operatsion tezlik va jarayonlarni sifatli muvofiqlashtirish." },
+      { name: "Turkmaniston", note: "Mahalliy operatsion modellarni aniq sozlash bo'yicha tajriba." },
+      { name: "Qirg'iziston", note: "Qulay ulanish va agentlar tarmog'ini rivojlantirishga yo'naltirilgan yondashuv." },
+      { name: "Afg'oniston", note: "Ishonchlilik, jarayonlar barqarorligi va sifatli yordamga e'tibor." },
+    ],
+  },
+  audiences: {
+    eyebrow: "Hamkorlik formatlari",
+    title: "Imkoniyatlaringizga mos rolni tanlang",
+    description:
+      "Bitta sxemaga moslashish shart emas: format jamoa tajribasi, mamlakat, to'lov resurslari va auditoriya manbasiga bog'liq.",
+    items: [
+      {
+        title: "Payment Agent",
+        items: [
+          "Mahalliy depozitlar va pul yechish bilan ishlaysiz.",
+          "Mamlakatingiz foydalanuvchilarining moliyaviy odatlarini tushunasiz.",
+          "Muntazam operatsion ish olib borishga tayyorsiz.",
+        ],
+        cta: "Payment Agent bo'lish",
+      },
+      {
+        title: "E-payment Agent",
+        items: [
+          "Raqamli to'lovlar yoki to'lov marshrutizatsiyasi bo'yicha tajribangiz bor.",
+          "Mahalliy fintech jarayonlari va cheklovlarini tushunasiz.",
+          "Barqaror raqamli ssenariyni qo'llab-quvvatlay olasiz.",
+        ],
+        cta: "E-payment Agent bo'lish",
+      },
+      {
+        title: "Affiliate Partner",
+        items: [
+          "Trafik, hamjamiyat yoki media resursini rivojlantirasiz.",
+          "Mahalliy auditoriyani jalb qilish va ushlab turishni bilasiz.",
+          "Kuchli reklama kanalini monetizatsiya qilishni xohlaysiz.",
+        ],
+        cta: "Affiliate Partner bo'lish",
+      },
+    ],
+  },
+  product: {
+    eyebrow: "Shaffof hamkorlik",
+    title: "Ish boshlanishidan oldin tushunarli shartlar",
+    description:
+      "Ulanishdan oldin hamkorlik formati, mamlakat, rollar, to'lov ssenariylari va aloqa kanallarini kelishamiz. Komissiya, hisob-kitob tartibi va talablarni aynan sizning holatingiz uchun belgilaymiz.",
+    items: [
+      { title: "Format va hudud", description: "Ish boshlanishidan oldin mos hamkorlik modeli va mamlakatni aniqlaymiz." },
+      { title: "Rollar va mas'uliyat", description: "Hamkor vazifalari va jamoaning mas'uliyat zonalarini oldindan kelishamiz." },
+      { title: "Ish ssenariylari", description: "Boshlanishdan oldin operatsiyalarni qayta ishlash va hamkorlik tartibini belgilaymiz." },
+      { title: "Aloqa kanallari", description: "Ulanish va keyingi operatsion savollar uchun kontaktlarni belgilaymiz." },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "TeamCash hamkorligi haqida qisqacha",
+    description: "TeamCash tizimiga ulanishdan oldingi asosiy savollar.",
+    items: [
+      {
+        question: "Ulanish nimadan boshlanadi?",
+        answer: "Mamlakat, aloqa ma'lumoti va qiziqtirgan hamkorlik formati ko'rsatilgan arizadan boshlanadi. Keyin jamoa tajribangiz va mumkin bo'lgan rolingizni muhokama qiladi.",
+      },
+      {
+        question: "Hamkorlik formati qanday tanlanadi?",
+        answer: "Format mamlakat, jamoa tajribasi va mavjud resurslarga bog'liq: to'lov operatsiyalari, raqamli to'lovlar yoki auditoriya jalb qilish.",
+      },
+      {
+        question: "Ariza uchun qanday ma'lumot kerak?",
+        answer: "Ism, mamlakat, aloqa usuli hamda jamoa, tajriba yoki trafik manbasi haqida qisqacha ma'lumot yetarli.",
+      },
+      {
+        question: "Komissiya va hisob-kitoblar qanday kelishiladi?",
+        answer: "Shartlar rol, hudud va ish ssenariysiga bog'liq. Aniq model va hisob-kitob tartibi ish boshlanishidan oldin hamkor bilan muhokama qilinadi.",
+      },
+      {
+        question: "Boshqa mamlakatdan ariza topshirish mumkinmi?",
+        answer: "Ha. Jamoa bozor va mumkin bo'lgan ish formatini baholashi uchun arizada mamlakatni ko'rsating.",
+      },
+      {
+        question: "To'lovlar bo'yicha tajriba majburiymi?",
+        answer: "Payment Agent va E-payment Agent uchun to'lov tajribasi muhim. Affiliate Partner uchun trafik, hamjamiyat, mahalliy auditoriya va reklama tajribasi asosiy bo'lishi mumkin.",
+      },
+      {
+        question: "Ulanish qancha vaqt oladi?",
+        answer: "Muddat mamlakat, tanlangan rol va jamoaning tayyorligiga bog'liq. Arizadan keyin imkoniyatlarni baholaymiz, so'ng shartlar va ish jarayonini kelishamiz.",
+      },
+      {
+        question: "Bir nechta formatni birlashtirish mumkinmi?",
+        answer: "Ha, agar jamoada mos resurslar bo'lsa. To'lov va affiliate modellarini birlashtirish imkoniyati ish boshlanishidan oldin alohida muhokama qilinadi.",
+      },
+    ],
+  },
+  contact: {
+    eyebrow: "Aloqa",
+    title: "Jamoangiz va mamlakatingiz haqida aytib bering",
+    description: "Ariza qoldiring, biz bozoringiz, hamkorlik formati va TeamCash tizimiga ulanishning eng yaxshi yo'lini muhokama qilamiz.",
+    telegramLabel: "Telegram",
+    telegramHandle: "@teamcashDaler",
+    formTitle: "Ariza qoldirish",
+    submit: "Arizani yuborish",
+    fields: {
+      name: "Ism",
+      company: "Kompaniya",
+      country: "Mamlakat",
+      telegram: "Telegram / aloqa",
+      details: "Izoh",
+      placeholders: {
+        name: "Ismingiz",
+        company: "Kompaniya yoki jamoa nomi",
+        country: "Masalan, O'zbekiston",
+        telegram: "@username",
+        details: "Sizni qaysi format qiziqtirishini yozing: Payment Agent, E-payment Agent yoki Affiliate Partner hamda qaysi mamlakatda ishlamoqchisiz.",
+      },
+    },
+    emailSubject: "TeamCash tizimiga ulanish so'rovi",
+  },
+  footer: {
+    description: "Mahalliy to'lov agentlari, e-payment jamoalari va affiliate hamkorlari uchun TeamCash hamkorligi.",
+    links: [
+      { label: "Telegram", href: "https://t.me/teamcashDaler" },
+      { label: "Email", href: sharedLinks.email },
+      { label: "Mahsulot haqida", href: sharedLinks.about },
     ],
   },
   geographyTelegramLabel: "Telegram",

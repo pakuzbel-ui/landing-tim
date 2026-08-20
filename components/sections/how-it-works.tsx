@@ -8,7 +8,7 @@ export function HowItWorksSection() {
   const content = useSiteContent();
 
   return (
-    <section id="how-it-works" className="py-14 sm:py-18">
+    <section id="how-it-works" className="mobile-premium-section py-14 sm:py-18">
       <Container>
         <SectionHeading
           eyebrow={content.process.eyebrow}
@@ -16,13 +16,9 @@ export function HowItWorksSection() {
           description={content.process.description}
         />
 
-        <div className="mt-8 grid gap-x-8 gap-y-6 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+        <div className="mobile-process-list mt-8 grid gap-x-8 gap-y-6 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
           {content.process.steps.map((item) => (
-            <div key={item.step} className="flex items-start gap-4 py-2">
-              <div className="flex shrink-0 flex-col items-center gap-2 pt-0.5">
-                <span className="font-display text-sm font-semibold text-primary">{item.step}</span>
-                <span className="h-10 w-px bg-primary/25" />
-              </div>
+            <div key={item.step} className="mobile-process-card py-2">
               <div>
                 <h3 className="font-display text-xl font-semibold leading-tight text-copy sm:text-[1.35rem]">
                   {item.title}

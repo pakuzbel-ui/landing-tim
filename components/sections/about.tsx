@@ -15,11 +15,11 @@ export function AboutSection() {
   const content = useSiteContent();
 
   return (
-    <section id="about" className="border-y border-white/10 py-16 sm:py-20">
+    <section id="about" className="mobile-premium-section border-y border-white/10 py-16 sm:py-20">
       <Container>
-        <div className="mb-14 grid gap-4 border-b border-primary/20 pb-8 sm:grid-cols-3 sm:gap-5">
+        <div className="mobile-stat-grid mb-14 grid gap-4 border-b border-primary/20 pb-8 sm:grid-cols-3 sm:gap-5">
           {content.hero.chips.map((stat, index) => (
-            <div key={stat.label} className="flex min-h-20 items-center gap-3 sm:gap-4">
+            <div key={stat.label} className="mobile-stat-card flex min-h-20 items-center gap-3 sm:gap-4">
               <div className="flex h-14 w-16 shrink-0 items-center justify-center sm:h-16 sm:w-20">
                 <Image
                   src={statIcons[index]}
@@ -44,13 +44,12 @@ export function AboutSection() {
             description={content.about.description}
           />
 
-          <div>
-            {content.about.cards.map((card, index) => (
+          <div className="mobile-about-list">
+            {content.about.cards.map((card) => (
               <div
                 key={card.title}
-                className="grid gap-3 border-t border-white/15 py-6 sm:grid-cols-[56px_1fr] sm:gap-5"
+                className="mobile-about-card border-t border-white/15 py-6"
               >
-                <span className="font-display text-sm font-semibold text-primary">0{index + 1}</span>
                 <div>
                   <h3 className="font-display text-2xl font-semibold text-copy">{card.title}</h3>
                   <p className="mt-3 max-w-2xl text-base leading-7 text-copy-muted">{card.description}</p>
