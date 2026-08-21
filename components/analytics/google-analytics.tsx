@@ -2,7 +2,8 @@
 
 import Script from "next/script";
 
-const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const measurementId =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-0TEMDWCX40";
 
 /** Loads GA4 only after a production measurement ID is configured. */
 export function GoogleAnalytics() {
