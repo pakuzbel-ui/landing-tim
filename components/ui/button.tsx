@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 type ButtonProps = {
@@ -9,12 +9,14 @@ type ButtonProps = {
   leadingIcon?: ReactNode;
   compact?: boolean;
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
-export function Button({ href, children, variant = "primary", leadingIcon, compact = false, className }: ButtonProps) {
+export function Button({ href, children, variant = "primary", leadingIcon, compact = false, className, onClick }: ButtonProps) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(
         "group inline-flex min-h-11 items-center py-2 text-sm font-semibold transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
         compact ? "gap-2" : "gap-3",

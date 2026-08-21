@@ -6,6 +6,7 @@ import { mesh } from "topojson-client";
 import countriesTopology from "world-atlas/countries-50m.json";
 import { TelegramIcon } from "@/components/ui/icons";
 import { WavingFlag } from "@/components/ui/waving-flag";
+import { trackContactClick } from "@/lib/analytics";
 
 type GlobeMarker = {
   country: string;
@@ -836,6 +837,7 @@ export function GlobeMap({
                 markerPointRefs.current[index] = element;
               }}
               href={marker.telegram}
+              onClick={() => trackContactClick("telegram", "geography_map", marker.country)}
               target="_blank"
               rel="noreferrer"
               onPointerDown={(event) => event.stopPropagation()}

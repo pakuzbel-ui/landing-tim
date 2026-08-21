@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { useSiteContent } from "@/lib/locale-provider";
+import { trackEvent } from "@/lib/analytics";
 
 export function HeroSection() {
   const content = useSiteContent();
@@ -27,13 +28,14 @@ export function HeroSection() {
             </p>
 
             <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-8">
-              <Button href="#contact" className="text-base">
+              <Button href="#contact" className="text-base" onClick={() => trackEvent("cta_click", { placement: "hero", target: "contact" })}>
                 {content.hero.primaryCta}
               </Button>
               <Button
                 href="#calculator"
                 variant="ghost"
                 leadingIcon={<span className="font-display text-lg font-semibold">$</span>}
+                onClick={() => trackEvent("calculator_open", { placement: "hero" })}
               >
                 {content.hero.secondaryCta}
               </Button>

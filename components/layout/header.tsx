@@ -10,6 +10,7 @@ import { TelegramIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { WavingFlag } from "@/components/ui/waving-flag";
 import { TopAgentTicker } from "@/components/layout/top-agent-ticker";
 import { telegramByLocale } from "@/data/telegram";
+import { trackContactClick, trackEvent } from "@/lib/analytics";
 
 const whatsappHref = "https://wa.me/?text=Hello%20TeamCash";
 const utilityButtonClass = "inline-flex min-w-[48px] items-center justify-center gap-2 px-2 py-2 text-xs font-semibold text-copy-muted transition hover:text-copy";
@@ -152,6 +153,7 @@ export function Header() {
               <a
                 key={item.href}
                 href={item.href}
+                onClick={() => trackEvent("navigation_click", { section: item.href.slice(1), placement: "header" })}
                 className="rounded-full px-3 py-1.5 text-sm text-copy-muted transition hover:bg-white/[0.07] hover:text-copy"
               >
                 {item.label}
@@ -265,6 +267,7 @@ export function Header() {
 
             <a
               href={telegramHref}
+              onClick={() => trackContactClick("telegram", "header", locale)}
               target="_blank"
               rel="noreferrer"
               aria-label="Open Telegram"
@@ -275,6 +278,7 @@ export function Header() {
 
             <a
               href={whatsappHref}
+              onClick={() => trackContactClick("whatsapp", "header", locale)}
               target="_blank"
               rel="noreferrer"
               aria-label="Open WhatsApp"
@@ -283,7 +287,7 @@ export function Header() {
               <WhatsAppIcon className="h-[18px] w-[18px]" />
             </a>
 
-            <Button href="#contact" compact>{content.header.cta}</Button>
+            <Button href="#contact" compact onClick={() => trackEvent("cta_click", { placement: "header", target: "contact" })}>{content.header.cta}</Button>
           </div>
         </div>
       </div>
@@ -299,7 +303,10 @@ export function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  trackEvent("navigation_click", { section: item.href.slice(1), placement: "mobile_menu" });
+                  setMobileMenuOpen(false);
+                }}
                 className="flex min-h-12 items-center border-b border-white/10 py-3 text-base font-medium text-copy-muted transition hover:text-copy"
               >
                 <span>{item.label}</span>
@@ -310,6 +317,7 @@ export function Header() {
               <div className="flex items-center gap-2">
                 <a
                   href={telegramHref}
+                  onClick={() => trackContactClick("telegram", "mobile_menu", locale)}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open Telegram"
@@ -319,6 +327,7 @@ export function Header() {
                 </a>
                 <a
                   href={whatsappHref}
+                  onClick={() => trackContactClick("whatsapp", "mobile_menu", locale)}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open WhatsApp"
@@ -328,7 +337,7 @@ export function Header() {
                 </a>
               </div>
               <div onClick={() => setMobileMenuOpen(false)}>
-                <Button href="#contact" compact className="text-sm">
+                <Button href="#contact" compact className="text-sm" onClick={() => trackEvent("cta_click", { placement: "mobile_menu", target: "contact" })}>
                   {content.header.cta}
                 </Button>
               </div>

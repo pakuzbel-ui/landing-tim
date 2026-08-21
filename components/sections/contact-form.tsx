@@ -7,6 +7,7 @@ import { FacebookIcon, InstagramIcon, TelegramIcon } from "@/components/ui/icons
 import { useLocale, useSiteContent } from "@/lib/locale-provider";
 import type { Locale } from "@/data/i18n";
 import { telegramByLocale } from "@/data/telegram";
+import { trackContactClick, trackEvent } from "@/lib/analytics";
 
 const socialLinks = [
   {
@@ -222,6 +223,7 @@ export function ContactFormSection() {
 
       setForm(initialState);
       setSubmitStatus("success");
+      trackEvent("generate_lead", { form_name: "partner_application", locale });
     } catch {
       setSubmitStatus("error");
     } finally {
@@ -254,6 +256,7 @@ export function ContactFormSection() {
                     <a
                       key={item.label}
                       href={isTelegram ? countryTelegram.href : item.href}
+                      onClick={() => trackContactClick(item.textKey as "telegram" | "instagram" | "facebook", "contact_section", locale)}
                       target="_blank"
                       rel="noreferrer"
                       className="mobile-social-link flex items-center gap-3 py-2"

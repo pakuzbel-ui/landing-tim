@@ -2,6 +2,7 @@
 
 import { Container } from "@/components/ui/container";
 import { useSiteContent } from "@/lib/locale-provider";
+import { trackContactClick } from "@/lib/analytics";
 
 export function Footer() {
   const content = useSiteContent();
@@ -19,6 +20,10 @@ export function Footer() {
             <a
               key={link.label}
               href={link.href}
+              onClick={() => {
+                if (link.href.includes("t.me")) trackContactClick("telegram", "footer");
+                if (link.href.startsWith("mailto:")) trackContactClick("email", "footer");
+              }}
               className="text-sm font-medium text-[#d6dee8]/90 hover:text-primary"
             >
               {link.label}

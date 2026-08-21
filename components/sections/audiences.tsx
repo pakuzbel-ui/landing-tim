@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { useSiteContent } from "@/lib/locale-provider";
+import { trackEvent } from "@/lib/analytics";
 
 export function AudiencesSection() {
   const content = useSiteContent();
@@ -39,7 +40,7 @@ export function AudiencesSection() {
                 ))}
               </div>
 
-              <Button href="#contact" className="mt-6">
+              <Button href="#contact" className="mt-6" onClick={() => trackEvent("cta_click", { placement: "audience_card", audience: audience.title, target: "contact" })}>
                 {audience.cta}
               </Button>
             </div>
