@@ -1,14 +1,45 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { ScrollReset } from "@/components/layout/scroll-reset";
 import { SiteLoader } from "@/components/layout/site-loader";
 import { LocaleProvider } from "@/lib/locale-provider";
 
 export const metadata: Metadata = {
-  title: "TeamCash | Агентская сеть альтернативных платежных решений",
+  metadataBase: new URL("https://melbet-partners.net"),
+  title: {
+    default: "TeamCash | Партнёрская сеть платёжных решений",
+    template: "%s | TeamCash",
+  },
   description:
-    "Premium landing page для международной агентской команды TeamCash в экосистеме MelBet.",
+    "TeamCash — международная партнёрская сеть для локальных платёжных агентов, e-payment команд и affiliate-партнёров.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: "/",
+    siteName: "TeamCash",
+    title: "TeamCash | Партнёрская сеть платёжных решений",
+    description:
+      "Партнёрская сеть для локальных платёжных агентов, e-payment команд и affiliate-партнёров.",
+  },
+  twitter: {
+    card: "summary",
+    title: "TeamCash | Партнёрская сеть платёжных решений",
+    description:
+      "Партнёрская сеть для локальных платёжных агентов, e-payment команд и affiliate-партнёров.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +58,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <GoogleAnalytics />
         <SiteLoader />
         <LocaleProvider>
           <ScrollReset />

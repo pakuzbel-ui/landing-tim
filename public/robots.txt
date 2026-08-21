@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://melbet-partners.net/sitemap.xml
