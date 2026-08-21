@@ -23,6 +23,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = window.localStorage.getItem("teamcash-locale") as Locale | null;
     if (stored && localeOptions.some((item) => item.code === stored)) {
+      // Keep the server's Russian default until hydration, then restore a saved choice.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocale(stored);
     }
   }, []);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Locale, localeOptions } from "@/data/i18n";
 import { Button } from "@/components/ui/button";
 import { EarningsCalculatorModal } from "@/components/sections/earnings-calculator";
@@ -136,7 +137,7 @@ export function Header() {
     >
       <div className="w-full px-4 sm:px-6 lg:px-10 2xl:px-14">
         <div className="flex h-16 items-center justify-between gap-3 sm:h-20">
-          <a href="/" className="flex items-center">
+          <Link href="/" className="flex items-center">
             <div className="info-panel inline-flex min-w-0 flex-col rounded-xl px-3 py-2 [clip-path:polygon(0_0,calc(100%-10px)_0,100%_10px,100%_100%,10px_100%,0_calc(100%-10px))]">
               <span className="font-display text-[1.35rem] font-semibold leading-none sm:text-[2rem]">
                 <span className="text-copy">Team</span>
@@ -146,7 +147,7 @@ export function Header() {
                 {content.brand.suffix}
               </span>
             </div>
-          </a>
+          </Link>
 
           <nav className="info-panel hidden items-center gap-1.5 rounded-full px-2 py-1.5 xl:flex 2xl:gap-2">
             {content.navItems.map((item) => (

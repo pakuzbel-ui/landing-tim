@@ -248,6 +248,8 @@ export function EarningsCalculatorModal({ open, onClose }: EarningsCalculatorMod
     };
   }, [deposit, losses]);
 
+  // Render this portal only after hydration to keep the server and client markup aligned.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {

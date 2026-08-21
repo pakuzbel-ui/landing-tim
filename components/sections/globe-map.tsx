@@ -220,7 +220,7 @@ export function GlobeMap({
   telegramLabel: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const frameRef = useRef<number>();
+  const frameRef = useRef<number | undefined>(undefined);
   const interactiveRef = useRef(false);
   const mobileControlsRef = useRef(false);
   const markerPointRefs = useRef<(HTMLAnchorElement | null)[]>([]);
