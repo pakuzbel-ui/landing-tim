@@ -1,8 +1,62 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-400.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-600.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-800.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   color-scheme: dark;
@@ -718,7 +772,10 @@ a {
     background:
       linear-gradient(90deg, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0.08) 72%, rgba(0, 0, 0, 0.04)),
       linear-gradient(180deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.34)),
-      url("/backgrounds/site-background-mobile-final.png") center top / cover no-repeat;
+      image-set(
+        url("/backgrounds/site-background-mobile-final.avif") type("image/avif") 1x,
+        url("/backgrounds/site-background-mobile-final.webp") type("image/webp") 1x
+      ) center top / cover no-repeat;
     transform: translateZ(0);
     backface-visibility: hidden;
   }

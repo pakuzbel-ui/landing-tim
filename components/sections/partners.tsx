@@ -68,25 +68,25 @@ const sectionCopy: Record<Locale, { eyebrow: string; title: string; description:
 const partners = [
   {
     name: "LaLiga",
-    image: "/partners/laliga-hd.png",
+    image: "/partners/laliga-optimized.webp",
     className: "partner-card--outer",
     logoClassName: "partner-card__logo--mono",
   },
   {
     name: "Juventus",
-    image: "/partners/juventus-hd.png",
+    image: "/partners/juventus-optimized.webp",
     className: "partner-card--inner",
     logoClassName: "partner-card__logo--mono",
   },
   {
     name: "Kamaru Usman",
-    image: "/partners/kamaru-usman-hd.png",
+    image: "/partners/kamaru-usman-optimized.webp",
     className: "partner-card--inner",
     logoClassName: "partner-card__logo--portrait",
   },
   {
     name: "OG Esports",
-    image: "/partners/og-esports-hd-transparent.png",
+    image: "/partners/og-esports-optimized.webp",
     className: "partner-card--outer",
     logoClassName: "",
   },

@@ -87,7 +87,7 @@ export function SiteLoader() {
       </div>
       <span className="site-loader__impact" aria-hidden="true" />
       <div className="site-loader__ball-wrap" aria-hidden="true">
-        <img className="site-loader__ball" src="/teamcash-loader-ball-v2.png" alt="" />
+        <img className="site-loader__ball" src="/teamcash-loader-ball-v2.webp" alt="" />
       </div>
       <span className="site-loader__shadow" aria-hidden="true" />
     </div>
