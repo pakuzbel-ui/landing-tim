@@ -1310,7 +1310,7 @@ siteContent.uz = {
     title: "Jamoangiz va mamlakatingiz haqida aytib bering",
     description: "Ariza qoldiring, biz bozoringiz, hamkorlik formati va TeamCash tizimiga ulanishning eng yaxshi yo'lini muhokama qilamiz.",
     telegramLabel: "Telegram",
-    telegramHandle: "@teamcashDaler",
+    telegramHandle: "@Manager_TeamCash",
     formTitle: "Ariza qoldirish",
     submit: "Arizani yuborish",
     fields: {
@@ -1332,7 +1332,7 @@ siteContent.uz = {
   footer: {
     description: "Mahalliy to'lov agentlari, e-payment jamoalari va affiliate hamkorlari uchun TeamCash hamkorligi.",
     links: [
-      { label: "Telegram", href: "https://t.me/teamcashDaler" },
+      { label: "Telegram", href: "https://t.me/Manager_TeamCash" },
       { label: "Email", href: sharedLinks.email },
       { label: "Mahsulot haqida", href: sharedLinks.about },
     ],

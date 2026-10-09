@@ -53,7 +53,7 @@ const capitalMarkers: CapitalMarker[] = [
     capital: "Tashkent",
     lat: 41.2995,
     lon: 69.2401,
-    telegram: "https://t.me/teamcashDaler",
+    telegram: "https://t.me/Manager_TeamCash",
     labelOffset: { x: 14, y: -1 },
     mobileLabelOffset: { x: 14, y: -3 },
   },
