@@ -1,8 +1,8 @@
 import type { Locale } from "@/data/i18n";
 
 export const telegramByLocale: Record<Locale, { handle: string; href: string }> = {
-  ru: { handle: "@teamcash_partnerships", href: "https://t.me/teamcash_partnerships" },
-  en: { handle: "@teamcash_partnerships", href: "https://t.me/teamcash_partnerships" },
+  ru: { handle: "@Melbetofficial_global", href: "https://t.me/Melbetofficial_global" },
+  en: { handle: "@Melbetofficial_global", href: "https://t.me/Melbetofficial_global" },
   az: { handle: "@Teamcash_azerbaijan01", href: "https://t.me/Teamcash_azerbaijan01" },
   mn: { handle: "@melbetmongolia3", href: "https://t.me/melbetmongolia3" },
   tk: { handle: "@MelBetmell", href: "https://t.me/MelBetmell" },

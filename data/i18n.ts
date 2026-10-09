@@ -393,7 +393,7 @@ export const siteContent: Record<Locale, SiteContent> & { ps?: SiteContent } = {
       description:
         "Оставьте заявку, и мы обсудим ваш рынок, формат партнерства и оптимальный путь подключения к TeamCash.",
       telegramLabel: "Telegram",
-      telegramHandle: "@teamcash_partnerships",
+      telegramHandle: "@Melbetofficial_global",
       formTitle: "Оставить заявку",
       submit: "Отправить заявку",
       fields: {
@@ -415,7 +415,7 @@ export const siteContent: Record<Locale, SiteContent> & { ps?: SiteContent } = {
     footer: {
       description: "TeamCash-партнерства для локальных платежных агентов, e-payment команд и affiliate-партнеров.",
       links: [
-        { label: "Telegram", href: sharedLinks.telegram },
+        { label: "Telegram", href: "https://t.me/Melbetofficial_global" },
         { label: "Email", href: sharedLinks.email },
         { label: "О продукте", href: sharedLinks.about },
       ],
@@ -688,7 +688,7 @@ siteContent.en = {
     description:
       "Leave a request and we will discuss your market, partnership format, and the best way to join TeamCash.",
     telegramLabel: "Telegram",
-    telegramHandle: "@teamcash_partnerships",
+    telegramHandle: "@Melbetofficial_global",
     formTitle: "Submit a request",
     submit: "Send Request",
     fields: {
@@ -710,7 +710,7 @@ siteContent.en = {
   footer: {
     description: "TeamCash partnerships for local payment agents, e-payment teams, and affiliate partners.",
     links: [
-      { label: "Telegram", href: sharedLinks.telegram },
+      { label: "Telegram", href: "https://t.me/Melbetofficial_global" },
       { label: "Email", href: sharedLinks.email },
       { label: "About", href: sharedLinks.about },
     ],
