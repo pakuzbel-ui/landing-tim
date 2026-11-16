@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { ScrollReset } from "@/components/layout/scroll-reset";
 import { SiteLoader } from "@/components/layout/site-loader";
 import { LocaleProvider } from "@/lib/locale-provider";
@@ -59,6 +60,7 @@ export default function RootLayout({
       </head>
       <body>
         <GoogleAnalytics />
+        <MetaPixel />
         <SiteLoader />
         <LocaleProvider>
           <ScrollReset />
