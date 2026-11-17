@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1131539156495408";
+const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1609022647154442";
 
 /** Loads Meta Pixel and records the initial page view. */
 export function MetaPixel() {
