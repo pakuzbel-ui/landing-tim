@@ -215,7 +215,6 @@ export function ContactFormSection() {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({
           ...form,
-          website: "",
           locale,
           page: window.location.href,
         }),
