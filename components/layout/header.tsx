@@ -277,16 +277,18 @@ export function Header() {
               <TelegramIcon className="h-[18px] w-[18px]" />
             </a>
 
-            <a
-              href={whatsappHref}
-              onClick={() => trackContactClick("whatsapp", "header", locale)}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Open WhatsApp"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_22px_rgba(37,211,102,0.22)] transition hover:bg-[#35E276]"
-            >
-              <WhatsAppIcon className="h-[18px] w-[18px]" />
-            </a>
+            {locale === "fa" ? (
+              <a
+                href={whatsappHref}
+                onClick={() => trackContactClick("whatsapp", "header", locale)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Open WhatsApp"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_22px_rgba(37,211,102,0.22)] transition hover:bg-[#35E276]"
+              >
+                <WhatsAppIcon className="h-[18px] w-[18px]" />
+              </a>
+            ) : null}
 
             <Button href="#contact" compact onClick={() => trackEvent("cta_click", { placement: "header", target: "contact" })}>{content.header.cta}</Button>
           </div>
@@ -326,16 +328,18 @@ export function Header() {
                 >
                   <TelegramIcon className="h-[18px] w-[18px]" />
                 </a>
-                <a
-                  href={whatsappHref}
-                  onClick={() => trackContactClick("whatsapp", "mobile_menu", locale)}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open WhatsApp"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white"
-                >
-                  <WhatsAppIcon className="h-[18px] w-[18px]" />
-                </a>
+                {locale === "fa" ? (
+                  <a
+                    href={whatsappHref}
+                    onClick={() => trackContactClick("whatsapp", "mobile_menu", locale)}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open WhatsApp"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white"
+                  >
+                    <WhatsAppIcon className="h-[18px] w-[18px]" />
+                  </a>
+                ) : null}
               </div>
               <div onClick={() => setMobileMenuOpen(false)}>
                 <Button href="#contact" compact className="text-sm" onClick={() => trackEvent("cta_click", { placement: "mobile_menu", target: "contact" })}>
