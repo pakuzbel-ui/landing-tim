@@ -34,5 +34,21 @@ export function trackContactClick(
   placement: string,
   locale?: string,
 ) {
-  trackEvent("contact_click", { contact_type: contactType, placement, locale });
+  const params = { contact_type: contactType, placement, locale };
+
+  // Keep the WhatsApp click in GA, but do not send it to Meta as an ad conversion.
+  if (contactType === "whatsapp") {
+    if (typeof window !== "undefined") window.gtag?.("event", "contact_click", params);
+    return;
+  }
+
+  if (typeof window === "undefined") return;
+  window.gtag?.("event", "contact_click", params);
+
+  if (contactType === "telegram") {
+    window.fbq?.("track", "Lead", params);
+    return;
+  }
+
+  window.fbq?.("track", "Contact", params);
 }
